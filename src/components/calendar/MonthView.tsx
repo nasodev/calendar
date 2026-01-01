@@ -72,12 +72,13 @@ export function MonthView({
   const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col overflow-hidden">
+      {/* Weekday headers */}
       <div className="grid grid-cols-7 border-b">
         {weekdays.map((day, i) => (
           <div
             key={day}
-            className={`p-2 text-center text-sm font-medium ${
+            className={`p-1 md:p-2 text-center text-xs md:text-sm font-medium ${
               i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : ''
             }`}
           >
@@ -85,47 +86,105 @@ export function MonthView({
           </div>
         ))}
       </div>
-      <div className="flex-1 grid grid-cols-7 grid-rows-6">
+
+      {/* Calendar grid */}
+      <div className="flex-1 grid grid-cols-7 auto-rows-fr overflow-y-auto">
         {weeks.flat().map((date, i) => {
           const dayEvents = getEventsForDate(date);
-          const displayEvents = dayEvents.slice(0, 3);
-          const moreCount = dayEvents.length - 3;
+          // Show 1 event on mobile, 2 on tablet, 3 on desktop
+          const mobileCount = 1;
+          const tabletCount = 2;
+          const desktopCount = 3;
 
           return (
             <div
               key={i}
               onClick={() => onDateClick(date)}
-              className={`border-b border-r p-1 min-h-[100px] cursor-pointer hover:bg-muted/50 ${
+              className={`border-b border-r p-0.5 md:p-1 min-h-[60px] md:min-h-[100px] cursor-pointer hover:bg-muted/50 transition-colors ${
                 !isCurrentMonth(date) ? 'bg-muted/30 text-muted-foreground' : ''
               }`}
             >
+              {/* Date number */}
               <div
-                className={`text-sm mb-1 ${
+                className={`text-xs md:text-sm mb-0.5 md:mb-1 ${
                   isToday(date)
-                    ? 'bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center'
+                    ? 'bg-primary text-primary-foreground w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs'
                     : ''
                 }`}
               >
                 {date.getDate()}
               </div>
-              <div className="space-y-1">
-                {displayEvents.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    title={event.title}
-                    time={!event.all_day ? formatTime(event.start_time) : undefined}
-                    memberColor={event.member.color}
-                    categoryColor={event.category?.color}
-                    memberName={event.member.name}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onEventClick(event);
-                    }}
-                  />
-                ))}
-                {moreCount > 0 && (
-                  <p className="text-xs text-muted-foreground">+{moreCount} more</p>
-                )}
+
+              {/* Events - responsive count */}
+              <div className="space-y-0.5 md:space-y-1">
+                {/* Mobile: show 1 event */}
+                <div className="md:hidden">
+                  {dayEvents.slice(0, mobileCount).map((event) => (
+                    <EventCard
+                      key={event.id}
+                      title={event.title}
+                      memberColor={event.member.color}
+                      categoryColor={event.category?.color}
+                      memberName={event.member.name}
+                      compact
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEventClick(event);
+                      }}
+                    />
+                  ))}
+                  {dayEvents.length > mobileCount && (
+                    <p className="text-[10px] text-muted-foreground">
+                      +{dayEvents.length - mobileCount}
+                    </p>
+                  )}
+                </div>
+
+                {/* Tablet: show 2 events */}
+                <div className="hidden md:block lg:hidden">
+                  {dayEvents.slice(0, tabletCount).map((event) => (
+                    <EventCard
+                      key={event.id}
+                      title={event.title}
+                      time={!event.all_day ? formatTime(event.start_time) : undefined}
+                      memberColor={event.member.color}
+                      categoryColor={event.category?.color}
+                      memberName={event.member.name}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEventClick(event);
+                      }}
+                    />
+                  ))}
+                  {dayEvents.length > tabletCount && (
+                    <p className="text-xs text-muted-foreground">
+                      +{dayEvents.length - tabletCount} more
+                    </p>
+                  )}
+                </div>
+
+                {/* Desktop: show 3 events */}
+                <div className="hidden lg:block">
+                  {dayEvents.slice(0, desktopCount).map((event) => (
+                    <EventCard
+                      key={event.id}
+                      title={event.title}
+                      time={!event.all_day ? formatTime(event.start_time) : undefined}
+                      memberColor={event.member.color}
+                      categoryColor={event.category?.color}
+                      memberName={event.member.name}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEventClick(event);
+                      }}
+                    />
+                  ))}
+                  {dayEvents.length > desktopCount && (
+                    <p className="text-xs text-muted-foreground">
+                      +{dayEvents.length - desktopCount} more
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           );

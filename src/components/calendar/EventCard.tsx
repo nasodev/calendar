@@ -4,6 +4,7 @@ interface EventCardProps {
   memberColor: string;
   categoryColor?: string;
   memberName: string;
+  compact?: boolean;
   onClick?: (e: React.MouseEvent) => void;
 }
 
@@ -13,8 +14,29 @@ export function EventCard({
   memberColor,
   categoryColor,
   memberName,
+  compact = false,
   onClick,
 }: EventCardProps) {
+  if (compact) {
+    return (
+      <div
+        onClick={onClick}
+        className="flex items-center gap-1 px-1 py-0.5 rounded text-[10px] cursor-pointer hover:opacity-80 transition-opacity"
+        style={{
+          backgroundColor: `${memberColor}20`,
+        }}
+      >
+        {categoryColor && (
+          <span
+            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+            style={{ backgroundColor: categoryColor }}
+          />
+        )}
+        <span className="truncate font-medium">{title}</span>
+      </div>
+    );
+  }
+
   return (
     <div
       onClick={onClick}

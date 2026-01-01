@@ -30,12 +30,20 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 
 // Auth
 export async function verifyCalendarMember() {
-  return fetchWithAuth('/auth/calendar/verify');
+  try {
+    return await fetchWithAuth('/auth/calendar/verify');
+  } catch {
+    return null;
+  }
 }
 
 // Members
 export async function getMembers() {
-  return fetchWithAuth('/members');
+  try {
+    return await fetchWithAuth('/members');
+  } catch {
+    return [];
+  }
 }
 
 export async function createMember(data: { display_name: string; color: string }) {
@@ -58,7 +66,11 @@ export async function deleteMember(id: string) {
 
 // Categories
 export async function getCategories() {
-  return fetchWithAuth('/categories');
+  try {
+    return await fetchWithAuth('/categories');
+  } catch {
+    return [];
+  }
 }
 
 export async function createCategory(data: { name: string; color: string; icon?: string }) {
@@ -81,7 +93,11 @@ export async function deleteCategory(id: string) {
 
 // Events
 export async function getEvents(startDate: string, endDate: string) {
-  return fetchWithAuth(`/events?start_date=${startDate}&end_date=${endDate}`);
+  try {
+    return await fetchWithAuth(`/events?start_date=${startDate}&end_date=${endDate}`);
+  } catch {
+    return [];
+  }
 }
 
 export async function createEvent(data: {
