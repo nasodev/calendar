@@ -1,0 +1,120 @@
+import { getIdToken } from './auth';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+async function fetchWithAuth(url: string, options: RequestInit = {}) {
+  const token = await getIdToken();
+
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
+  };
+
+  const response = await fetch(`${API_URL}${url}`, {
+    ...options,
+    headers,
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+    throw new Error(error.detail || `HTTP ${response.status}`);
+  }
+
+  if (response.status === 204) {
+    return null;
+  }
+
+  return response.json();
+}
+
+// Auth
+export async function verifyCalendarMember() {
+  return fetchWithAuth('/auth/calendar/verify');
+}
+
+// Members
+export async function getMembers() {
+  return fetchWithAuth('/members');
+}
+
+export async function createMember(data: { display_name: string; color: string }) {
+  return fetchWithAuth('/members', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateMember(id: string, data: { display_name?: string; color?: string }) {
+  return fetchWithAuth(`/members/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteMember(id: string) {
+  return fetchWithAuth(`/members/${id}`, { method: 'DELETE' });
+}
+
+// Categories
+export async function getCategories() {
+  return fetchWithAuth('/categories');
+}
+
+export async function createCategory(data: { name: string; color: string; icon?: string }) {
+  return fetchWithAuth('/categories', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateCategory(id: string, data: { name?: string; color?: string; icon?: string }) {
+  return fetchWithAuth(`/categories/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteCategory(id: string) {
+  return fetchWithAuth(`/categories/${id}`, { method: 'DELETE' });
+}
+
+// Events
+export async function getEvents(startDate: string, endDate: string) {
+  return fetchWithAuth(`/events?start_date=${startDate}&end_date=${endDate}`);
+}
+
+export async function createEvent(data: {
+  title: string;
+  description?: string;
+  start_time: string;
+  end_time: string;
+  all_day?: boolean;
+  category_id?: string;
+  recurrence_rule?: string;
+  recurrence_start?: string;
+  recurrence_end?: string;
+}) {
+  return fetchWithAuth('/events', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateEvent(id: string, data: Partial<{
+  title: string;
+  description: string;
+  start_time: string;
+  end_time: string;
+  all_day: boolean;
+  category_id: string;
+}>) {
+  return fetchWithAuth(`/events/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteEvent(id: string) {
+  return fetchWithAuth(`/events/${id}`, { method: 'DELETE' });
+}
