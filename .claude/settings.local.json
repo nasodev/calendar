@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(claude mcp add-json:*)",
+      "Bash(claude mcp list:*)",
+      "Skill(superpowers:brainstorming)",
+      "WebFetch(domain:calendar-shadcn.vercel.app)",
+      "Bash(mkdir:*)",
+      "Skill(superpowers:writing-plans)",
+      "Skill(superpowers:subagent-driven-development)",
+      "Bash(npx create-next-app@latest:*)",
+      "Skill(superpowers:executing-plans)"
+    ]
+  }
+}
