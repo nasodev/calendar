@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -76,50 +76,76 @@ export function EventDialog({
   onSave,
   onDelete,
 }: EventDialogProps) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [startTime, setStartTime] = useState('09:00');
-  const [endDate, setEndDate] = useState<Date>(new Date());
-  const [endTime, setEndTime] = useState('10:00');
-  const [allDay, setAllDay] = useState(false);
-  const [categoryId, setCategoryId] = useState<string>('');
-  const [recurrenceRule, setRecurrenceRule] = useState('');
-  const [recurrenceEnd, setRecurrenceEnd] = useState<Date | undefined>(undefined);
+  interface FormState {
+    title: string;
+    description: string;
+    startDate: Date;
+    startTime: string;
+    endDate: Date;
+    endTime: string;
+    allDay: boolean;
+    categoryId: string;
+    recurrenceRule: string;
+    recurrenceEnd: Date | undefined;
+  }
 
-  useEffect(() => {
+  const getInitialFormState = (): FormState => {
     if (event) {
-      setTitle(event.title);
-      setDescription(event.description || '');
       const start = new Date(event.start_time);
       const end = new Date(event.end_time);
-      setStartDate(start);
-      setStartTime(format(start, 'HH:mm'));
-      setEndDate(end);
-      setEndTime(format(end, 'HH:mm'));
-      setAllDay(event.all_day);
-      setCategoryId(event.category_id || '');
-      setRecurrenceRule(event.recurrence_rule || 'none');
-      if (event.recurrence_end) {
-        setRecurrenceEnd(new Date(event.recurrence_end));
-      } else {
-        setRecurrenceEnd(undefined);
-      }
-    } else {
-      const date = initialDate || new Date();
-      const hour = initialHour ?? 9;
-      setTitle('');
-      setDescription('');
-      setStartDate(date);
-      setStartTime(`${hour.toString().padStart(2, '0')}:00`);
-      setEndDate(date);
-      setEndTime(`${(hour + 1).toString().padStart(2, '0')}:00`);
-      setAllDay(false);
-      setCategoryId('');
-      setRecurrenceRule('none');
-      setRecurrenceEnd(undefined);
+      return {
+        title: event.title,
+        description: event.description || '',
+        startDate: start,
+        startTime: format(start, 'HH:mm'),
+        endDate: end,
+        endTime: format(end, 'HH:mm'),
+        allDay: event.all_day,
+        categoryId: event.category_id || '',
+        recurrenceRule: event.recurrence_rule || 'none',
+        recurrenceEnd: event.recurrence_end ? new Date(event.recurrence_end) : undefined,
+      };
     }
-  }, [event, initialDate, initialHour, open]);
+    const date = initialDate || new Date();
+    const hour = initialHour ?? 9;
+    return {
+      title: '',
+      description: '',
+      startDate: date,
+      startTime: `${hour.toString().padStart(2, '0')}:00`,
+      endDate: date,
+      endTime: `${(hour + 1).toString().padStart(2, '0')}:00`,
+      allDay: false,
+      categoryId: '',
+      recurrenceRule: 'none',
+      recurrenceEnd: undefined,
+    };
+  };
+
+  const [formState, setFormState] = useState<FormState>(getInitialFormState);
+  const { title, description, startDate, startTime, endDate, endTime, allDay, categoryId, recurrenceRule, recurrenceEnd } = formState;
+
+  const setTitle = (v: string) => setFormState(s => ({ ...s, title: v }));
+  const setDescription = (v: string) => setFormState(s => ({ ...s, description: v }));
+  const setStartDate = (v: Date) => setFormState(s => ({ ...s, startDate: v }));
+  const setStartTime = (v: string) => setFormState(s => ({ ...s, startTime: v }));
+  const setEndDate = (v: Date) => setFormState(s => ({ ...s, endDate: v }));
+  const setEndTime = (v: string) => setFormState(s => ({ ...s, endTime: v }));
+  const setAllDay = (v: boolean) => setFormState(s => ({ ...s, allDay: v }));
+  const setCategoryId = (v: string) => setFormState(s => ({ ...s, categoryId: v }));
+  const setRecurrenceRule = (v: string) => setFormState(s => ({ ...s, recurrenceRule: v }));
+  const setRecurrenceEnd = (v: Date | undefined) => setFormState(s => ({ ...s, recurrenceEnd: v }));
+
+  const prevOpenRef = useRef(open);
+
+  useLayoutEffect(() => {
+    // Reset form when dialog opens
+    if (open && !prevOpenRef.current) {
+      setFormState(getInitialFormState());
+    }
+    prevOpenRef.current = open;
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Only reset on open state change
+  }, [open]);
 
   const handleSave = () => {
     const [startHour, startMinute] = startTime.split(':').map(Number);

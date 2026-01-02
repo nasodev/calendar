@@ -68,14 +68,6 @@ export default function Home() {
     }
   }, [currentDate]);
 
-  const fetchCategories = useCallback(async () => {
-    try {
-      const data = await getCategories();
-      setCategories(data);
-    } catch (error) {
-      console.error('Failed to fetch categories:', error);
-    }
-  }, []);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -96,11 +88,36 @@ export default function Home() {
   }, [user, isVerified]);
 
   useEffect(() => {
-    if (isVerified) {
-      fetchEvents();
-      fetchCategories();
-    }
-  }, [isVerified, fetchEvents, fetchCategories]);
+    if (!isVerified) return;
+
+    let cancelled = false;
+
+    const loadData = async () => {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const startDate = new Date(year, month - 1, 1).toISOString().split('T')[0];
+      const endDate = new Date(year, month + 2, 0).toISOString().split('T')[0];
+
+      try {
+        const [eventsData, categoriesData] = await Promise.all([
+          getEvents(startDate, endDate),
+          getCategories(),
+        ]);
+        if (!cancelled) {
+          setEvents(eventsData);
+          setCategories(categoriesData);
+        }
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      }
+    };
+
+    loadData();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isVerified, currentDate]);
 
   const handleNavigate = (direction: 'prev' | 'next' | 'today') => {
     const newDate = new Date(currentDate);
