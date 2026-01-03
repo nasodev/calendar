@@ -15,6 +15,7 @@ import {
   updateEvent,
   deleteEvent,
   verifyCalendarMember,
+  registerSelfAsMember,
 } from '@/lib/api';
 
 type ViewType = 'month' | 'week' | 'day';
@@ -76,15 +77,29 @@ export default function Home() {
   }, [user, loading, router]);
 
   useEffect(() => {
-    if (user && !isVerified) {
-      verifyCalendarMember()
-        .then(() => setIsVerified(true))
-        .catch((error) => {
-          console.error('Failed to verify member:', error);
-          // Allow UI to work even without backend (demo mode)
+    if (!user || isVerified) return;
+
+    const verifyOrRegister = async () => {
+      try {
+        const member = await verifyCalendarMember();
+        if (member) {
           setIsVerified(true);
-        });
-    }
+          return;
+        }
+
+        // Not a member yet - auto-register
+        const displayName = user.displayName || user.email?.split('@')[0] || '사용자';
+        await registerSelfAsMember(displayName);
+        console.log('Auto-registered as calendar member');
+        setIsVerified(true);
+      } catch (error) {
+        console.error('Failed to verify/register member:', error);
+        // Allow UI to work even without backend (demo mode)
+        setIsVerified(true);
+      }
+    };
+
+    verifyOrRegister();
   }, [user, isVerified]);
 
   useEffect(() => {

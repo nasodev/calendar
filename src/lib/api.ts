@@ -37,6 +37,18 @@ export async function verifyCalendarMember() {
   }
 }
 
+// Auto-register current user as a calendar member
+export async function registerSelfAsMember(displayName: string, color?: string) {
+  const randomColor = color || `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+  return fetchWithAuth('/calendar/members', {
+    method: 'POST',
+    body: JSON.stringify({
+      display_name: displayName,
+      color: randomColor,
+    }),
+  });
+}
+
 // Members
 export async function getMembers() {
   try {
