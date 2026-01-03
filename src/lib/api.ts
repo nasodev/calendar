@@ -104,6 +104,14 @@ export async function deleteCategory(id: string) {
 }
 
 // Events
+export interface RecurrencePattern {
+  frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+  interval?: number;
+  weekdays?: ('MO' | 'TU' | 'WE' | 'TH' | 'FR' | 'SA' | 'SU')[];
+  count?: number;
+  until?: string;
+}
+
 export async function getEvents(startDate: string, endDate: string) {
   try {
     const response = await fetchWithAuth(`/calendar/events?start_date=${startDate}&end_date=${endDate}`);
@@ -121,8 +129,7 @@ export async function createEvent(data: {
   end_time: string;
   all_day?: boolean;
   category_id?: string;
-  recurrence_rule?: string;
-  recurrence_start?: string;
+  recurrence_pattern?: RecurrencePattern;
   recurrence_end?: string;
 }) {
   return fetchWithAuth('/calendar/events', {

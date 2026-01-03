@@ -20,6 +20,7 @@ import {
   deleteCategory,
   verifyCalendarMember,
   registerSelfAsMember,
+  type RecurrencePattern,
 } from '@/lib/api';
 
 type ViewType = 'month' | 'week' | 'day';
@@ -34,8 +35,9 @@ interface CalendarEvent {
   member: { name: string; color: string };
   category?: { name: string; color: string };
   category_id?: string;
-  recurrence_rule?: string;
-  recurrence_start?: string;
+  is_recurring?: boolean;
+  occurrence_date?: string;
+  recurrence_pattern?: RecurrencePattern;
   recurrence_end?: string;
 }
 
@@ -200,8 +202,7 @@ export default function Home() {
     end_time: string;
     all_day: boolean;
     category_id?: string;
-    recurrence_rule?: string;
-    recurrence_start?: string;
+    recurrence_pattern?: RecurrencePattern;
     recurrence_end?: string;
   }) => {
     try {

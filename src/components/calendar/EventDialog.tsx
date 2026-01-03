@@ -34,6 +34,15 @@ interface Category {
   color: string;
 }
 
+type Weekday = 'MO' | 'TU' | 'WE' | 'TH' | 'FR' | 'SA' | 'SU';
+type Frequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+
+interface RecurrencePattern {
+  frequency: Frequency;
+  interval?: number;
+  weekdays?: Weekday[];
+}
+
 interface EventData {
   id?: string;
   title: string;
@@ -42,8 +51,7 @@ interface EventData {
   end_time: string;
   all_day: boolean;
   category_id?: string;
-  recurrence_rule?: string;
-  recurrence_start?: string;
+  recurrence_pattern?: RecurrencePattern;
   recurrence_end?: string;
 }
 
@@ -58,12 +66,22 @@ interface EventDialogProps {
   onDelete?: (id: string) => void;
 }
 
-const RECURRENCE_OPTIONS = [
+const FREQUENCY_OPTIONS: { value: 'none' | Frequency; label: string }[] = [
   { value: 'none', label: '반복 안 함' },
-  { value: 'FREQ=DAILY', label: '매일' },
-  { value: 'FREQ=WEEKLY', label: '매주' },
-  { value: 'FREQ=MONTHLY', label: '매월' },
-  { value: 'FREQ=YEARLY', label: '매년' },
+  { value: 'DAILY', label: '매일' },
+  { value: 'WEEKLY', label: '매주' },
+  { value: 'MONTHLY', label: '매월' },
+  { value: 'YEARLY', label: '매년' },
+];
+
+const WEEKDAY_OPTIONS: { value: Weekday; label: string }[] = [
+  { value: 'MO', label: '월' },
+  { value: 'TU', label: '화' },
+  { value: 'WE', label: '수' },
+  { value: 'TH', label: '목' },
+  { value: 'FR', label: '금' },
+  { value: 'SA', label: '토' },
+  { value: 'SU', label: '일' },
 ];
 
 export function EventDialog({
@@ -85,7 +103,8 @@ export function EventDialog({
     endTime: string;
     allDay: boolean;
     categoryId: string;
-    recurrenceRule: string;
+    frequency: 'none' | Frequency;
+    weekdays: Weekday[];
     recurrenceEnd: Date | undefined;
   }
 
@@ -102,7 +121,8 @@ export function EventDialog({
         endTime: format(end, 'HH:mm'),
         allDay: event.all_day,
         categoryId: event.category_id || '',
-        recurrenceRule: event.recurrence_rule || 'none',
+        frequency: event.recurrence_pattern?.frequency || 'none',
+        weekdays: event.recurrence_pattern?.weekdays || [],
         recurrenceEnd: event.recurrence_end ? new Date(event.recurrence_end) : undefined,
       };
     }
@@ -117,13 +137,14 @@ export function EventDialog({
       endTime: `${(hour + 1).toString().padStart(2, '0')}:00`,
       allDay: false,
       categoryId: '',
-      recurrenceRule: 'none',
+      frequency: 'none',
+      weekdays: [],
       recurrenceEnd: undefined,
     };
   };
 
   const [formState, setFormState] = useState<FormState>(getInitialFormState);
-  const { title, description, startDate, startTime, endDate, endTime, allDay, categoryId, recurrenceRule, recurrenceEnd } = formState;
+  const { title, description, startDate, startTime, endDate, endTime, allDay, categoryId, frequency, weekdays, recurrenceEnd } = formState;
 
   const setTitle = (v: string) => setFormState(s => ({ ...s, title: v }));
   const setDescription = (v: string) => setFormState(s => ({ ...s, description: v }));
@@ -133,7 +154,11 @@ export function EventDialog({
   const setEndTime = (v: string) => setFormState(s => ({ ...s, endTime: v }));
   const setAllDay = (v: boolean) => setFormState(s => ({ ...s, allDay: v }));
   const setCategoryId = (v: string) => setFormState(s => ({ ...s, categoryId: v }));
-  const setRecurrenceRule = (v: string) => setFormState(s => ({ ...s, recurrenceRule: v }));
+  const setFrequency = (v: 'none' | Frequency) => setFormState(s => ({ ...s, frequency: v, weekdays: v !== 'WEEKLY' ? [] : s.weekdays }));
+  const toggleWeekday = (day: Weekday) => setFormState(s => ({
+    ...s,
+    weekdays: s.weekdays.includes(day) ? s.weekdays.filter(d => d !== day) : [...s.weekdays, day]
+  }));
   const setRecurrenceEnd = (v: Date | undefined) => setFormState(s => ({ ...s, recurrenceEnd: v }));
 
   const prevOpenRef = useRef(open);
@@ -157,7 +182,15 @@ export function EventDialog({
     const endDateTime = new Date(endDate);
     endDateTime.setHours(endHour, endMinute, 0, 0);
 
-    const actualRecurrenceRule = recurrenceRule === 'none' ? undefined : recurrenceRule;
+    const isRecurring = frequency !== 'none';
+
+    let recurrencePattern: RecurrencePattern | undefined;
+    if (isRecurring) {
+      recurrencePattern = { frequency: frequency as Frequency };
+      if (frequency === 'WEEKLY' && weekdays.length > 0) {
+        recurrencePattern.weekdays = weekdays;
+      }
+    }
 
     const eventData: EventData = {
       ...(event?.id && { id: event.id }),
@@ -167,9 +200,8 @@ export function EventDialog({
       end_time: endDateTime.toISOString(),
       all_day: allDay,
       category_id: categoryId || undefined,
-      recurrence_rule: actualRecurrenceRule,
-      recurrence_start: actualRecurrenceRule ? format(startDate, 'yyyy-MM-dd') : undefined,
-      recurrence_end: actualRecurrenceRule && recurrenceEnd ? format(recurrenceEnd, 'yyyy-MM-dd') : undefined,
+      recurrence_pattern: recurrencePattern,
+      recurrence_end: isRecurring && recurrenceEnd ? format(recurrenceEnd, 'yyyy-MM-dd') : undefined,
     };
 
     onSave(eventData);
@@ -316,12 +348,12 @@ export function EventDialog({
 
           <div className="grid gap-2">
             <Label>반복</Label>
-            <Select value={recurrenceRule} onValueChange={setRecurrenceRule}>
+            <Select value={frequency} onValueChange={(v) => setFrequency(v as 'none' | Frequency)}>
               <SelectTrigger>
                 <SelectValue placeholder="반복 설정" />
               </SelectTrigger>
               <SelectContent>
-                {RECURRENCE_OPTIONS.map((opt) => (
+                {FREQUENCY_OPTIONS.map((opt) => (
                   <SelectItem key={opt.value} value={opt.value}>
                     {opt.label}
                   </SelectItem>
@@ -330,7 +362,30 @@ export function EventDialog({
             </Select>
           </div>
 
-          {recurrenceRule && recurrenceRule !== 'none' && (
+          {frequency === 'WEEKLY' && (
+            <div className="grid gap-2">
+              <Label>반복 요일</Label>
+              <div className="flex flex-wrap gap-1">
+                {WEEKDAY_OPTIONS.map((opt) => (
+                  <Button
+                    key={opt.value}
+                    type="button"
+                    variant={weekdays.includes(opt.value) ? 'default' : 'outline'}
+                    size="sm"
+                    className="w-9 h-9 p-0"
+                    onClick={() => toggleWeekday(opt.value)}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                선택하지 않으면 시작일의 요일에만 반복됩니다
+              </p>
+            </div>
+          )}
+
+          {frequency !== 'none' && (
             <div className="grid gap-2">
               <Label>반복 종료일</Label>
               <Popover>

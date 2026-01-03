@@ -10,6 +10,8 @@ interface CalendarEvent {
   all_day: boolean;
   member: { name: string; color: string };
   category?: { name: string; color: string };
+  is_recurring?: boolean;
+  occurrence_date?: string;
 }
 
 interface DayViewProps {
@@ -35,6 +37,13 @@ export function DayView({
     return events.filter((event) => {
       const eventDate = new Date(event.start_time);
       const eventHour = eventDate.getHours();
+
+      // For recurring events, use occurrence_date for date comparison
+      if (event.is_recurring && event.occurrence_date) {
+        const [y, m, d] = event.occurrence_date.split('-').map(Number);
+        return y === year && m - 1 === month && d === day && eventHour === hour;
+      }
+
       return (
         eventDate.getFullYear() === year &&
         eventDate.getMonth() === month &&
