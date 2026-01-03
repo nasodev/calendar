@@ -8,12 +8,16 @@ import { MonthView } from '@/components/calendar/MonthView';
 import { WeekView } from '@/components/calendar/WeekView';
 import { DayView } from '@/components/calendar/DayView';
 import { EventDialog } from '@/components/calendar/EventDialog';
+import { CategoryDialog } from '@/components/calendar/CategoryDialog';
 import {
   getEvents,
   getCategories,
   createEvent,
   updateEvent,
   deleteEvent,
+  createCategory,
+  updateCategory,
+  deleteCategory,
   verifyCalendarMember,
   registerSelfAsMember,
 } from '@/lib/api';
@@ -50,6 +54,7 @@ export default function Home() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [initialDate, setInitialDate] = useState<Date | undefined>(undefined);
   const [initialHour, setInitialHour] = useState<number | undefined>(undefined);
@@ -220,6 +225,42 @@ export default function Home() {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const data = await getCategories();
+      setCategories(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
+
+  const handleCreateCategory = async (data: { name: string; color: string; icon?: string }) => {
+    try {
+      await createCategory(data);
+      await fetchCategories();
+    } catch (error) {
+      console.error('Failed to create category:', error);
+    }
+  };
+
+  const handleUpdateCategory = async (id: string, data: { name?: string; color?: string; icon?: string }) => {
+    try {
+      await updateCategory(id, data);
+      await fetchCategories();
+    } catch (error) {
+      console.error('Failed to update category:', error);
+    }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    try {
+      await deleteCategory(id);
+      await fetchCategories();
+    } catch (error) {
+      console.error('Failed to delete category:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -240,6 +281,7 @@ export default function Home() {
         onViewChange={handleViewChange}
         onNavigate={handleNavigate}
         onAddEvent={handleAddEvent}
+        onOpenSettings={() => setCategoryDialogOpen(true)}
       />
 
       {view === 'month' && (
@@ -278,6 +320,15 @@ export default function Home() {
         initialHour={initialHour}
         onSave={handleSaveEvent}
         onDelete={handleDeleteEvent}
+      />
+
+      <CategoryDialog
+        open={categoryDialogOpen}
+        onOpenChange={setCategoryDialogOpen}
+        categories={categories}
+        onCreateCategory={handleCreateCategory}
+        onUpdateCategory={handleUpdateCategory}
+        onDeleteCategory={handleDeleteCategory}
       />
     </div>
   );

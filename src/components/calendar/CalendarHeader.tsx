@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Plus, Calendar } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Calendar, Settings } from 'lucide-react';
 
 type ViewType = 'month' | 'week' | 'day';
 
@@ -11,6 +11,7 @@ interface CalendarHeaderProps {
   onViewChange: (view: ViewType) => void;
   onNavigate: (direction: 'prev' | 'next' | 'today') => void;
   onAddEvent: () => void;
+  onOpenSettings: () => void;
 }
 
 export function CalendarHeader({
@@ -19,6 +20,7 @@ export function CalendarHeader({
   onViewChange,
   onNavigate,
   onAddEvent,
+  onOpenSettings,
 }: CalendarHeaderProps) {
   const formatTitle = () => {
     const year = currentDate.getFullYear();
@@ -109,6 +111,15 @@ export function CalendarHeader({
             </Button>
           ))}
         </div>
+        {/* Settings button */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-8 w-8 md:h-10 md:w-10"
+          onClick={onOpenSettings}
+        >
+          <Settings className="h-4 w-4" />
+        </Button>
         {/* Mobile: icon only */}
         <Button size="icon" className="md:hidden h-8 w-8" onClick={onAddEvent}>
           <Plus className="h-4 w-4" />
