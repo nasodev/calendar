@@ -62,7 +62,7 @@ export default function Home() {
 
     try {
       const data = await getEvents(startDate, endDate);
-      setEvents(data);
+      setEvents(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch events:', error);
     }
@@ -104,8 +104,8 @@ export default function Home() {
           getCategories(),
         ]);
         if (!cancelled) {
-          setEvents(eventsData);
-          setCategories(categoriesData);
+          setEvents(Array.isArray(eventsData) ? eventsData : []);
+          setCategories(Array.isArray(categoriesData) ? categoriesData : []);
         }
       } catch (error) {
         console.error('Failed to load data:', error);
