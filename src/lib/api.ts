@@ -106,7 +106,9 @@ export async function deleteCategory(id: string) {
 // Events
 export async function getEvents(startDate: string, endDate: string) {
   try {
-    return await fetchWithAuth(`/calendar/events?start_date=${startDate}&end_date=${endDate}`);
+    const response = await fetchWithAuth(`/calendar/events?start_date=${startDate}&end_date=${endDate}`);
+    // Backend returns { events: [...] }, extract the array
+    return response?.events || [];
   } catch {
     return [];
   }
