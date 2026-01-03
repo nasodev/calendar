@@ -48,10 +48,17 @@ export function MonthView({
   }
 
   const getEventsForDate = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0];
+    // Use local date comparison to avoid timezone issues
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
     return events.filter((event) => {
-      const eventDate = new Date(event.start_time).toISOString().split('T')[0];
-      return eventDate === dateStr;
+      const eventDate = new Date(event.start_time);
+      return (
+        eventDate.getFullYear() === year &&
+        eventDate.getMonth() === month &&
+        eventDate.getDate() === day
+      );
     });
   };
 

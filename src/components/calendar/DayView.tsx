@@ -28,12 +28,19 @@ export function DayView({
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   const getEventsForHour = (hour: number) => {
-    const dateStr = currentDate.toISOString().split('T')[0];
+    // Use local date comparison to avoid timezone issues
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const day = currentDate.getDate();
     return events.filter((event) => {
       const eventDate = new Date(event.start_time);
-      const eventDateStr = eventDate.toISOString().split('T')[0];
       const eventHour = eventDate.getHours();
-      return eventDateStr === dateStr && eventHour === hour;
+      return (
+        eventDate.getFullYear() === year &&
+        eventDate.getMonth() === month &&
+        eventDate.getDate() === day &&
+        eventHour === hour
+      );
     });
   };
 
