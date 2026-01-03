@@ -31,7 +31,7 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 // Auth
 export async function verifyCalendarMember() {
   try {
-    return await fetchWithAuth('/auth/calendar/verify');
+    return await fetchWithAuth('/calendar/auth/verify');
   } catch {
     return null;
   }
@@ -40,61 +40,61 @@ export async function verifyCalendarMember() {
 // Members
 export async function getMembers() {
   try {
-    return await fetchWithAuth('/members');
+    return await fetchWithAuth('/calendar/members');
   } catch {
     return [];
   }
 }
 
 export async function createMember(data: { display_name: string; color: string }) {
-  return fetchWithAuth('/members', {
+  return fetchWithAuth('/calendar/members', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 }
 
 export async function updateMember(id: string, data: { display_name?: string; color?: string }) {
-  return fetchWithAuth(`/members/${id}`, {
+  return fetchWithAuth(`/calendar/members/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(data),
   });
 }
 
 export async function deleteMember(id: string) {
-  return fetchWithAuth(`/members/${id}`, { method: 'DELETE' });
+  return fetchWithAuth(`/calendar/members/${id}`, { method: 'DELETE' });
 }
 
 // Categories
 export async function getCategories() {
   try {
-    return await fetchWithAuth('/categories');
+    return await fetchWithAuth('/calendar/categories');
   } catch {
     return [];
   }
 }
 
 export async function createCategory(data: { name: string; color: string; icon?: string }) {
-  return fetchWithAuth('/categories', {
+  return fetchWithAuth('/calendar/categories', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 }
 
 export async function updateCategory(id: string, data: { name?: string; color?: string; icon?: string }) {
-  return fetchWithAuth(`/categories/${id}`, {
+  return fetchWithAuth(`/calendar/categories/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(data),
   });
 }
 
 export async function deleteCategory(id: string) {
-  return fetchWithAuth(`/categories/${id}`, { method: 'DELETE' });
+  return fetchWithAuth(`/calendar/categories/${id}`, { method: 'DELETE' });
 }
 
 // Events
 export async function getEvents(startDate: string, endDate: string) {
   try {
-    return await fetchWithAuth(`/events?start_date=${startDate}&end_date=${endDate}`);
+    return await fetchWithAuth(`/calendar/events?start_date=${startDate}&end_date=${endDate}`);
   } catch {
     return [];
   }
@@ -111,7 +111,7 @@ export async function createEvent(data: {
   recurrence_start?: string;
   recurrence_end?: string;
 }) {
-  return fetchWithAuth('/events', {
+  return fetchWithAuth('/calendar/events', {
     method: 'POST',
     body: JSON.stringify(data),
   });
@@ -125,12 +125,12 @@ export async function updateEvent(id: string, data: Partial<{
   all_day: boolean;
   category_id: string;
 }>) {
-  return fetchWithAuth(`/events/${id}`, {
+  return fetchWithAuth(`/calendar/events/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(data),
   });
 }
 
 export async function deleteEvent(id: string) {
-  return fetchWithAuth(`/events/${id}`, { method: 'DELETE' });
+  return fetchWithAuth(`/calendar/events/${id}`, { method: 'DELETE' });
 }
