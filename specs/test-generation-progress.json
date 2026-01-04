@@ -1,0 +1,631 @@
+{
+  "planFile": "family-calendar.plan.md",
+  "lastUpdated": "2026-01-04T11:10:00Z",
+  "currentIndex": 78,
+  "tests": [
+    {
+      "id": "1.1",
+      "name": "Login with valid credentials",
+      "file": "tests/authentication/login-valid.spec.ts",
+      "suite": "Authentication",
+      "status": "completed",
+      "completedAt": "2026-01-04T07:28:17Z"
+    },
+    {
+      "id": "1.2",
+      "name": "Login with invalid credentials",
+      "file": "tests/authentication/login-invalid.spec.ts",
+      "suite": "Authentication",
+      "status": "completed",
+      "completedAt": "2026-01-04T07:32:24Z"
+    },
+    {
+      "id": "1.3",
+      "name": "Password visibility toggle",
+      "file": "tests/authentication/password-visibility.spec.ts",
+      "suite": "Authentication",
+      "status": "completed",
+      "completedAt": "2026-01-04T07:34:54Z"
+    },
+    {
+      "id": "1.4",
+      "name": "Auto-registration on first login",
+      "file": "tests/authentication/auto-registration.spec.ts",
+      "suite": "Authentication",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:10:00Z"
+    },
+    {
+      "id": "1.5",
+      "name": "Protected route access without authentication",
+      "file": "tests/authentication/protected-routes.spec.ts",
+      "suite": "Authentication",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:12:00Z"
+    },
+    {
+      "id": "1.6",
+      "name": "Session persistence",
+      "file": "tests/authentication/session-persistence.spec.ts",
+      "suite": "Authentication",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:14:00Z"
+    },
+    {
+      "id": "2.1",
+      "name": "Month view display",
+      "file": "tests/calendar-views/month-view.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:16:00Z"
+    },
+    {
+      "id": "2.2",
+      "name": "Week view display",
+      "file": "tests/calendar-views/week-view.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:18:00Z"
+    },
+    {
+      "id": "2.3",
+      "name": "Day view display",
+      "file": "tests/calendar-views/day-view.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:20:00Z"
+    },
+    {
+      "id": "2.4",
+      "name": "Switch between calendar views",
+      "file": "tests/calendar-views/view-switching.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:22:00Z"
+    },
+    {
+      "id": "2.5",
+      "name": "Date navigation in month view",
+      "file": "tests/calendar-views/month-navigation.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:24:00Z"
+    },
+    {
+      "id": "2.6",
+      "name": "Date navigation in week view",
+      "file": "tests/calendar-views/week-navigation.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:30:00Z"
+    },
+    {
+      "id": "2.7",
+      "name": "Date navigation in day view",
+      "file": "tests/calendar-views/day-navigation.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:32:00Z"
+    },
+    {
+      "id": "2.8",
+      "name": "Click on date in month view",
+      "file": "tests/calendar-views/month-date-click.spec.ts",
+      "suite": "Calendar Views",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:34:00Z"
+    },
+    {
+      "id": "3.1",
+      "name": "Create simple event",
+      "file": "tests/event-management/create-simple-event.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:36:00Z"
+    },
+    {
+      "id": "3.2",
+      "name": "Create all-day event",
+      "file": "tests/event-management/create-all-day-event.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:38:00Z"
+    },
+    {
+      "id": "3.3",
+      "name": "Edit existing event",
+      "file": "tests/event-management/edit-event.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:40:00Z"
+    },
+    {
+      "id": "3.4",
+      "name": "Delete event",
+      "file": "tests/event-management/delete-event.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:42:00Z"
+    },
+    {
+      "id": "3.5",
+      "name": "Cancel event creation",
+      "file": "tests/event-management/cancel-event-creation.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:44:00Z"
+    },
+    {
+      "id": "3.6",
+      "name": "Close event dialog using X button",
+      "file": "tests/event-management/close-event-dialog.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:46:00Z"
+    },
+    {
+      "id": "3.7",
+      "name": "Form validation - empty title",
+      "file": "tests/event-management/validation-empty-title.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:48:00Z"
+    },
+    {
+      "id": "3.8",
+      "name": "Date and time selection",
+      "file": "tests/event-management/date-time-selection.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:50:00Z"
+    },
+    {
+      "id": "3.9",
+      "name": "Multi-day event",
+      "file": "tests/event-management/multi-day-event.spec.ts",
+      "suite": "Event Management - Basic",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:52:00Z"
+    },
+    {
+      "id": "4.1",
+      "name": "Create daily recurring event",
+      "file": "tests/event-management/recurring-daily.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:54:00Z"
+    },
+    {
+      "id": "4.2",
+      "name": "Create weekly recurring event with default weekday",
+      "file": "tests/event-management/recurring-weekly-default.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:56:00Z"
+    },
+    {
+      "id": "4.3",
+      "name": "Create weekly recurring event with specific weekdays",
+      "file": "tests/event-management/recurring-weekly-custom.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T08:58:00Z"
+    },
+    {
+      "id": "4.4",
+      "name": "Create monthly recurring event",
+      "file": "tests/event-management/recurring-monthly.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:00:00Z"
+    },
+    {
+      "id": "4.5",
+      "name": "Create yearly recurring event",
+      "file": "tests/event-management/recurring-yearly.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:02:00Z"
+    },
+    {
+      "id": "4.6",
+      "name": "Set recurrence end date",
+      "file": "tests/event-management/recurring-end-date.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:04:00Z"
+    },
+    {
+      "id": "4.7",
+      "name": "Edit recurring event",
+      "file": "tests/event-management/edit-recurring-event.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:06:00Z"
+    },
+    {
+      "id": "4.8",
+      "name": "Delete recurring event",
+      "file": "tests/event-management/delete-recurring-event.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:08:00Z"
+    },
+    {
+      "id": "4.9",
+      "name": "Weekly recurrence interval",
+      "file": "tests/event-management/recurring-interval.spec.ts",
+      "suite": "Event Management - Recurring",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:10:00Z"
+    },
+    {
+      "id": "5.1",
+      "name": "Open category management dialog",
+      "file": "tests/category-management/open-dialog.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:12:00Z"
+    },
+    {
+      "id": "5.2",
+      "name": "Create new category",
+      "file": "tests/category-management/create-category.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:14:00Z"
+    },
+    {
+      "id": "5.3",
+      "name": "Create multiple categories",
+      "file": "tests/category-management/create-multiple-categories.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:16:00Z"
+    },
+    {
+      "id": "5.4",
+      "name": "Assign category to event",
+      "file": "tests/category-management/assign-to-event.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:18:00Z"
+    },
+    {
+      "id": "5.5",
+      "name": "Change event category",
+      "file": "tests/category-management/change-event-category.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:32:00Z"
+    },
+    {
+      "id": "5.6",
+      "name": "View all categories in list",
+      "file": "tests/category-management/view-category-list.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:32:00Z"
+    },
+    {
+      "id": "5.7",
+      "name": "Cancel category creation",
+      "file": "tests/category-management/cancel-category-creation.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:40:00Z"
+    },
+    {
+      "id": "5.8",
+      "name": "Category name validation",
+      "file": "tests/category-management/category-validation.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:40:00Z"
+    },
+    {
+      "id": "5.9",
+      "name": "Delete category",
+      "file": "tests/category-management/delete-category.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:45:00Z"
+    },
+    {
+      "id": "5.10",
+      "name": "Edit category",
+      "file": "tests/category-management/edit-category.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:45:00Z"
+    },
+    {
+      "id": "5.11",
+      "name": "Close category dialog",
+      "file": "tests/category-management/close-category-dialog.spec.ts",
+      "suite": "Category Management",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:50:00Z"
+    },
+    {
+      "id": "6.1",
+      "name": "Responsive design - desktop view",
+      "file": "tests/ui-ux/responsive-desktop.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:50:00Z"
+    },
+    {
+      "id": "6.2",
+      "name": "Responsive design - tablet view",
+      "file": "tests/ui-ux/responsive-tablet.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:55:00Z"
+    },
+    {
+      "id": "6.3",
+      "name": "Responsive design - mobile view",
+      "file": "tests/ui-ux/responsive-mobile.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T09:55:00Z"
+    },
+    {
+      "id": "6.4",
+      "name": "Korean localization",
+      "file": "tests/ui-ux/korean-localization.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:00:00Z"
+    },
+    {
+      "id": "6.5",
+      "name": "Accessibility - keyboard navigation",
+      "file": "tests/ui-ux/keyboard-navigation.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:00:00Z"
+    },
+    {
+      "id": "6.6",
+      "name": "Accessibility - screen reader support",
+      "file": "tests/ui-ux/screen-reader.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:05:00Z"
+    },
+    {
+      "id": "6.7",
+      "name": "Visual feedback on interactions",
+      "file": "tests/ui-ux/visual-feedback.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:05:00Z"
+    },
+    {
+      "id": "6.8",
+      "name": "Error handling and user messages",
+      "file": "tests/ui-ux/error-handling.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:12:00Z"
+    },
+    {
+      "id": "6.9",
+      "name": "Calendar theme and styling",
+      "file": "tests/ui-ux/theme-styling.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:12:00Z"
+    },
+    {
+      "id": "6.10",
+      "name": "Performance - page load time",
+      "file": "tests/ui-ux/page-load-performance.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:20:00Z"
+    },
+    {
+      "id": "6.11",
+      "name": "Performance - calendar rendering with many events",
+      "file": "tests/ui-ux/performance-many-events.spec.ts",
+      "suite": "UI/UX",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:20:00Z"
+    },
+    {
+      "id": "7.1",
+      "name": "Backend connectivity check",
+      "file": "tests/api-integration/backend-connectivity.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:20:00Z"
+    },
+    {
+      "id": "7.2",
+      "name": "GET /calendar/events endpoint",
+      "file": "tests/api-integration/get-events.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:25:00Z"
+    },
+    {
+      "id": "7.3",
+      "name": "POST /calendar/events endpoint",
+      "file": "tests/api-integration/post-event.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:25:00Z"
+    },
+    {
+      "id": "7.4",
+      "name": "PATCH /calendar/events/{id} endpoint",
+      "file": "tests/api-integration/patch-event.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:25:00Z"
+    },
+    {
+      "id": "7.5",
+      "name": "DELETE /calendar/events/{id} endpoint",
+      "file": "tests/api-integration/delete-event.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:32:00Z"
+    },
+    {
+      "id": "7.6",
+      "name": "GET /calendar/categories endpoint",
+      "file": "tests/api-integration/get-categories.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:32:00Z"
+    },
+    {
+      "id": "7.7",
+      "name": "POST /calendar/categories endpoint",
+      "file": "tests/api-integration/post-category.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:32:00Z"
+    },
+    {
+      "id": "7.8",
+      "name": "GET /calendar/auth/verify endpoint",
+      "file": "tests/api-integration/auth-verify.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:40:00Z"
+    },
+    {
+      "id": "7.9",
+      "name": "API error handling - 401 Unauthorized",
+      "file": "tests/api-integration/error-401.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:40:00Z"
+    },
+    {
+      "id": "7.10",
+      "name": "API error handling - 500 Server Error",
+      "file": "tests/api-integration/error-500.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:40:00Z"
+    },
+    {
+      "id": "7.11",
+      "name": "API Bearer token injection",
+      "file": "tests/api-integration/bearer-token.spec.ts",
+      "suite": "API Integration",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:48:00Z"
+    },
+    {
+      "id": "8.1",
+      "name": "Event time validation - end before start",
+      "file": "tests/edge-cases/time-validation.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:48:00Z"
+    },
+    {
+      "id": "8.2",
+      "name": "Create event with very long title",
+      "file": "tests/edge-cases/long-title.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:48:00Z"
+    },
+    {
+      "id": "8.3",
+      "name": "Create event with special characters",
+      "file": "tests/edge-cases/special-characters.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:53:00Z"
+    },
+    {
+      "id": "8.4",
+      "name": "Create event with emoji",
+      "file": "tests/edge-cases/emoji-in-title.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:53:00Z"
+    },
+    {
+      "id": "8.5",
+      "name": "Create many recurring instances",
+      "file": "tests/edge-cases/many-recurrences.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:53:00Z"
+    },
+    {
+      "id": "8.6",
+      "name": "Browser back button navigation",
+      "file": "tests/edge-cases/browser-back-button.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:58:00Z"
+    },
+    {
+      "id": "8.7",
+      "name": "Page refresh during event creation",
+      "file": "tests/edge-cases/refresh-during-creation.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:58:00Z"
+    },
+    {
+      "id": "8.8",
+      "name": "Multiple browser tabs",
+      "file": "tests/edge-cases/multiple-tabs.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T10:58:00Z"
+    },
+    {
+      "id": "8.9",
+      "name": "Leap year handling",
+      "file": "tests/edge-cases/leap-year.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T11:03:00Z"
+    },
+    {
+      "id": "8.10",
+      "name": "Midnight crossing events",
+      "file": "tests/edge-cases/midnight-crossing.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T11:03:00Z"
+    },
+    {
+      "id": "8.11",
+      "name": "Same start and end time",
+      "file": "tests/edge-cases/same-start-end.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T11:03:00Z"
+    },
+    {
+      "id": "8.12",
+      "name": "Empty description field",
+      "file": "tests/edge-cases/empty-description.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T11:08:00Z"
+    },
+    {
+      "id": "8.13",
+      "name": "Rapid clicking on save button",
+      "file": "tests/edge-cases/rapid-save-clicks.spec.ts",
+      "suite": "Edge Cases",
+      "status": "completed",
+      "completedAt": "2026-01-04T11:08:00Z"
+    }
+  ]
+}
