@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('API Integration', () => {
   test('POST /calendar/events endpoint', async ({ page }) => {
@@ -10,7 +12,7 @@ test.describe('API Integration', () => {
     let postResponse: any = null;
 
     // 1. Navigate to calendar page (already authenticated)
-    await page.goto('/');
+    await login(page);
 
     // Wait for calendar to load
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();

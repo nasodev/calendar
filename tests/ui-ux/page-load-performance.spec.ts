@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Performance - page load time', async ({ page, context }) => {
@@ -13,7 +15,7 @@ test.describe('UI/UX', () => {
     const startTime = Date.now();
     
     // 2. Navigate to the application (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
     
     // 3. Measure time to interactive using performance.timing API
     const performanceMetrics = await page.evaluate(() => {

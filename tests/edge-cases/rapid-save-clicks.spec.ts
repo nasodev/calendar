@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Edge Cases', () => {
   test('Rapid clicking on save button', async ({ page }) => {
     // 1. Navigate to calendar (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // 2. Open event creation dialog by clicking "일정 추가"
     await page.getByRole('button', { name: '일정 추가' }).click();

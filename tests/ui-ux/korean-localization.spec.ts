@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Korean localization', async ({ page }) => {
     // Navigate to the calendar application (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // Verify calendar header Korean labels
     // Verify 'Add Event' button is in Korean (일정 추가)

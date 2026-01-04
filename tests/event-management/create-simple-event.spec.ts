@@ -22,7 +22,10 @@ test.describe('Event Management - Basic', () => {
     // 6. Click the save/confirm button
     await page.getByRole('button', { name: '저장' }).click();
 
-    // 7. Verify the event appears on the calendar
-    await expect(page.getByText('테스트 일정')).toBeVisible();
+    // 7. Wait for dialog to close
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
+
+    // 8. Verify the event appears on the calendar
+    await expect(page.getByText('테스트 일정').first()).toBeVisible();
   });
 });

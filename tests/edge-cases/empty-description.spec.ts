@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Edge Cases', () => {
   test('Empty description field', async ({ page }) => {
     // 1. Navigate to calendar (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // Verify calendar page loaded
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();

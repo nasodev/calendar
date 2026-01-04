@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('API Integration', () => {
   test('API error handling - 500 Server Error', async ({ page }) => {
@@ -15,7 +17,7 @@ test.describe('API Integration', () => {
     });
 
     // 1. Navigate to calendar page (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // 2. Wait for calendar to load completely
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();

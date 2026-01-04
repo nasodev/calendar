@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Responsive design - desktop view', async ({ page }) => {
@@ -9,7 +11,7 @@ test.describe('UI/UX', () => {
     await page.setViewportSize({ width: 1920, height: 1080 });
 
     // 2. Navigate to calendar (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // 3. Verify all UI elements are properly sized and positioned
     await expect(page.getByRole('heading', { name: '2026년 1월' })).toBeVisible();

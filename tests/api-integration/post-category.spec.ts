@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('API Integration', () => {
   test('POST /calendar/categories endpoint', async ({ page }) => {
     // 1. Navigate to calendar page (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // 2. Open category management dialog
     await page.getByRole('button').filter({ hasText: /^$/ }).nth(2).click();

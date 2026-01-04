@@ -3,11 +3,13 @@
 // Test: Multiple browser tabs
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Edge Cases', () => {
   test('Multiple browser tabs', async ({ page, context }) => {
     // 1. Navigate to calendar in first tab (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
 
     // 2. Open a new tab with same URL (context.newPage())

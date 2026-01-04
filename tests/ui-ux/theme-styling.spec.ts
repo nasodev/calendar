@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Calendar theme and styling', async ({ page }) => {
     // 1. Navigate to calendar (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
     
     // Wait for calendar to load
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();

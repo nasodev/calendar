@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Edge Cases', () => {
   test('Leap year handling', async ({ page }) => {
     // Navigate to calendar (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // Navigate to February 2028 (a leap year)
     await page.evaluate(`async () => {

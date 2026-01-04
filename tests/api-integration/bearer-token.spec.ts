@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('API Integration', () => {
   test('API Bearer token injection', async ({ page }) => {
@@ -19,7 +21,7 @@ test.describe('API Integration', () => {
     });
 
     // 1. Navigate to calendar page (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // Wait for API calls to complete
     await page.waitForLoadState('networkidle');

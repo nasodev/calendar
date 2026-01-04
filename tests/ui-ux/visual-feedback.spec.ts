@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Visual feedback on interactions', async ({ page }) => {
     // Navigate to calendar page
-    await page.goto('/');
+    await login(page);
 
     // 1. Hover over buttons and verify hover states - Test Add Event button hover
     await page.getByRole('button', { name: '일정 추가' }).hover();

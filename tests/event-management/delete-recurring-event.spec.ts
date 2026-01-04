@@ -2,14 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Event Management - Recurring', () => {
   test('Delete recurring event', async ({ page }) => {
     // 1. Login and navigate to calendar
-    await page.goto('http://localhost:23002');
-    await page.getByRole('textbox', { name: '이름' }).fill('환규');
-    await page.getByRole('textbox', { name: '비밀번호' }).fill('hwankyu');
-    await page.getByRole('button', { name: '로그인' }).click();
+    await login(page);
 
     // Wait for calendar to load and verify recurring event exists
     await expect(page.getByText('매일 운동오전 12:00환규').first()).toBeVisible();

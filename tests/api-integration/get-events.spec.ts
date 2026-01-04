@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts (uses storageState authentication)
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('API Integration', () => {
   test('GET /calendar/events endpoint', async ({ page }) => {
@@ -27,7 +29,7 @@ test.describe('API Integration', () => {
     });
 
     // 1. Navigate to calendar (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
     
     // Wait for initial API call to complete
     await page.waitForResponse(response => 

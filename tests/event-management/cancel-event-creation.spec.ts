@@ -2,20 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Event Management - Basic', () => {
   test('Cancel event creation', async ({ page }) => {
-    // Navigate to the calendar application
-    await page.goto('http://localhost:23002');
-
-    // 1. Login - Enter name
-    await page.getByRole('textbox', { name: '이름' }).fill('환규');
-
-    // 1. Login - Enter password
-    await page.getByRole('textbox', { name: '비밀번호' }).fill('hwankyu');
-
-    // 1. Login - Click login button
-    await page.getByRole('button', { name: '로그인' }).click();
+    // Navigate and login
+    await login(page);
 
     // 2. Click the '일정 추가' (Add Event) button
     await page.getByRole('button', { name: '일정 추가' }).click();

@@ -2,15 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Category Management', () => {
   test('Create multiple categories', async ({ page }) => {
     // 1. Login and navigate to calendar
-    await page.goto('http://localhost:23002');
-    await page.getByText("로딩 중...").first().waitFor({ state: 'hidden' });
-    await page.getByRole('textbox', { name: '이름' }).fill('환규');
-    await page.getByRole('textbox', { name: '비밀번호' }).fill('hwankyu');
-    await page.getByRole('button', { name: '로그인' }).click();
+    await login(page);
 
     // 2. Open category management dialog
     await page.getByRole('button').filter({ hasText: /^$/ }).nth(2).click();

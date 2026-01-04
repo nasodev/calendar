@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Responsive design - tablet view', async ({ page }) => {
@@ -9,7 +11,7 @@ test.describe('UI/UX', () => {
     await page.setViewportSize({ width: 768, height: 1024 });
 
     // 2. Navigate to calendar and verify layout adjusts
-    await page.goto('/');
+    await login(page);
 
     // Verify all navigation buttons are visible and accessible
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();

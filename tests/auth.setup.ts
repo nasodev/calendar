@@ -16,12 +16,15 @@ setup('authenticate', async ({ page }) => {
   // Click login button
   await page.getByRole('button', { name: '로그인' }).click();
 
-  // Wait for navigation to calendar page
-  await page.waitForURL('http://localhost:23002/');
+  // Wait for navigation to calendar page (with longer timeout for auth)
+  await page.waitForURL('http://localhost:23002/', { timeout: 10000 });
 
-  // Verify login successful
-  await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
+  // Wait for calendar to load and verify login successful
+  await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible({ timeout: 10000 });
 
-  // Save authentication state
+  // Wait a bit longer to ensure Firebase has persisted auth state to localStorage
+  await page.waitForTimeout(1000);
+
+  // Save authentication state (includes localStorage with Firebase auth tokens)
   await page.context().storageState({ path: authFile });
 });

@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Edge Cases', () => {
   test('Browser back button navigation', async ({ page }) => {
     // 1. Navigate to calendar (authenticated via storageState)
-    await page.goto('/');
+    await login(page);
     
     // Verify calendar is loaded
     await expect(page.getByRole('heading', { name: '2026년 1월' })).toBeVisible();

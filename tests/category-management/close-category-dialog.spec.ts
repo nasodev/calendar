@@ -2,11 +2,13 @@
 // Authentication is handled via storageState (.auth/user.json)
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Category Management', () => {
   test('Close category dialog', async ({ page }) => {
     // Navigate to calendar (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // 1. Open category management dialog
     await page.getByRole('button').filter({ hasText: /^$/ }).nth(2).click();

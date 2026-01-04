@@ -2,14 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Calendar Views', () => {
   test('Date navigation in day view', async ({ page }) => {
     // 1. Login and navigate to calendar
-    await page.goto('http://localhost:23002');
-    await page.getByRole('textbox', { name: '이름' }).fill('환규');
-    await page.getByRole('textbox', { name: '비밀번호' }).fill('hwankyu');
-    await page.getByRole('button', { name: '로그인' }).click();
+    await login(page);
 
     // 2. Switch to day view by clicking '일' button
     await page.getByRole('button', { name: '일', exact: true }).click();

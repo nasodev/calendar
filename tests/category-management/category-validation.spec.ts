@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Category Management', () => {
   test('Category name validation', async ({ page }) => {
     // Navigate to calendar home page (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // Open category management dialog
     await page.getByRole('button').filter({ hasText: /^$/ }).nth(2).click();

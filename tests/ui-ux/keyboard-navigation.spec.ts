@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Accessibility - keyboard navigation', async ({ page }) => {
     // Navigate to calendar page (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // 1. Navigate to calendar using only keyboard (Tab key)
     // Press Tab to navigate to first interactive element

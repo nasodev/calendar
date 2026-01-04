@@ -2,19 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Event Management - Recurring', () => {
   test('Create daily recurring event', async ({ page }) => {
     // Navigate to the calendar application
-    await page.goto('http://localhost:23002');
-    
-    // Wait for page to fully load
-    await new Promise(f => setTimeout(f, 2 * 1000));
-    
-    // 1. Login and navigate to calendar
-    await page.getByRole('textbox', { name: '이름' }).fill('환규');
-    await page.getByRole('textbox', { name: '비밀번호' }).fill('hwankyu');
-    await page.getByRole('button', { name: '로그인' }).click();
+    await login(page);
     
     // 2. Click the '일정 추가' (Add Event) button
     await page.getByRole('button', { name: '일정 추가' }).click();

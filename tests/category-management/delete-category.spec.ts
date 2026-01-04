@@ -2,11 +2,13 @@
 // Authentication: Uses storageState (.auth/user.json) - NO login code
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('Category Management', () => {
   test('Delete category', async ({ page }) => {
     // Navigate to calendar page (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // Wait for calendar page to load
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();

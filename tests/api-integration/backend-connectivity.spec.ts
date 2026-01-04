@@ -2,6 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('API Integration', () => {
   test('Backend connectivity check', async ({ page }) => {
@@ -24,7 +26,7 @@ test.describe('API Integration', () => {
     });
 
     // 2. Navigate to calendar page (already authenticated via storageState)
-    await page.goto('/');
+    await login(page);
 
     // 3. Wait for page to load and API calls to complete
     await page.getByRole('button', { name: '일정 추가' }).waitFor({ state: 'visible' });

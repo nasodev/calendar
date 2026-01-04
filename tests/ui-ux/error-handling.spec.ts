@@ -2,11 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { login } from '../helpers/auth';
+
 
 test.describe('UI/UX', () => {
   test('Error handling and user messages', async ({ page }) => {
     // 1. Navigate to calendar and wait for it to load
-    await page.goto('/');
+    await login(page);
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
 
     // 2. Set up network interception to simulate backend failure
