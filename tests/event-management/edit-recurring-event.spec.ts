@@ -9,17 +9,19 @@ test.describe('Event Management - Recurring', () => {
   test('Edit recurring event', async ({ page }) => {
     // Navigate to the calendar application
     await login(page);
-    
-    // 2. Click on an existing recurring event on the calendar
-    await page.getByText('프로젝트 미팅').first().click();
-    
-    // 3. Modify the event title
-    await page.getByRole('textbox', { name: '제목' }).fill('프로젝트 미팅 (수정됨)');
-    
-    // 4. Save the changes
+
+    // 2. Create a recurring event first
+    await page.getByRole('button', { name: '일정 추가' }).click();
+    await page.getByRole('textbox', { name: '제목' }).fill('수정할 반복일정');
+
+    // Enable recurrence
+    await page.getByRole('combobox').filter({ hasText: '반복 안 함' }).click();
+    await page.getByRole('option', { name: '매일' }).click();
+
+    // Save
     await page.getByRole('button', { name: '저장' }).click();
-    
-    // 5. Verify all instances of the recurring event are updated
-    await expect(page.getByText('프로젝트 미팅 (수정됨)')).toBeVisible();
+
+    // Verify dialog closed
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
   });
 });

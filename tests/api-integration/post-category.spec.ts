@@ -80,7 +80,7 @@ test.describe('API Integration', () => {
     expect(requestPostData).toHaveProperty('color');
     expect(requestPostData.color).toMatch(/^#[0-9A-F]{6}$/i);
 
-    // 13. Verify new category appears in UI immediately
-    await expect(page.getByText('테스트 카테고리')).toBeVisible();
+    // 13. Verify new category appears in UI immediately (use first() to avoid strict mode violation)
+    await expect(page.getByText('테스트 카테고리').first()).toBeVisible();
   });
 });

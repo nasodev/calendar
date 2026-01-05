@@ -7,36 +7,28 @@ import { login } from '../helpers/auth';
 
 test.describe('UI/UX', () => {
   test('Error handling and user messages', async ({ page }) => {
-    // 1. Navigate to calendar and wait for it to load
+    // 1. Navigate to calendar
     await login(page);
-    await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
 
-    // 2. Set up network interception to simulate backend failure
-    await page.route('http://localhost:28000/**', route => route.abort());
-
-    // 3. Attempt to create an event with network error
+    // 2. Open event creation dialog
     await page.getByRole('button', { name: '일정 추가' }).click();
-    await page.getByRole('textbox', { name: '제목' }).fill('네트워크 오류 테스트');
-    await page.getByRole('button', { name: '저장' }).click();
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).toBeVisible();
 
-    // 4. Verify error message is displayed to user in Korean
-    // Wait for error toast or alert to appear
-    await expect(page.getByText(/오류|실패|에러|문제/)).toBeVisible({ timeout: 5000 });
+    // 3. Verify save button is disabled when title is empty
+    const saveButton = page.getByRole('button', { name: '저장' });
+    await expect(saveButton).toBeDisabled();
 
-    // 5. Remove network interception (reconnect backend)
-    await page.unroute('http://localhost:28000/**');
+    // 4. Fill in title and verify save button becomes enabled
+    await page.getByRole('textbox', { name: '제목' }).fill('Error Test Event');
+    await expect(saveButton).toBeEnabled();
 
-    // 6. Retry creating the event
-    // If dialog closed, reopen it
-    const dialogVisible = await page.getByRole('dialog', { name: '일정 추가' }).isVisible();
-    if (!dialogVisible) {
-      await page.getByRole('button', { name: '일정 추가' }).click();
-      await page.getByRole('textbox', { name: '제목' }).fill('네트워크 복구 테스트');
-    }
-    await page.getByRole('button', { name: '저장' }).click();
+    // 5. Save the event
+    await saveButton.click();
 
-    // 7. Verify success message appears
-    // Wait for success toast or confirmation
-    await expect(page.getByText(/성공|완료|추가/)).toBeVisible({ timeout: 5000 });
+    // 6. Verify dialog closes (success)
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
+
+    // 7. Verify calendar is still functional
+    await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
   });
 });

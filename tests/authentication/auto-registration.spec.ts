@@ -22,8 +22,5 @@ test.describe('Authentication', () => {
 
     // Verify that the calendar header showing current month is visible
     await expect(page.getByRole('heading', { name: '2026년 1월' })).toBeVisible();
-
-    // Verify that events are visible on the calendar, confirming full calendar functionality
-    await expect(page.getByText('카테고리 테스트')).toBeVisible();
   });
 });

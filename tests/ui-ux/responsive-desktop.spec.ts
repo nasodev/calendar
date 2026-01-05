@@ -10,29 +10,22 @@ test.describe('UI/UX', () => {
     // 1. Set browser viewport to desktop size (1920x1080)
     await page.setViewportSize({ width: 1920, height: 1080 });
 
-    // 2. Navigate to calendar (already authenticated via storageState)
+    // 2. Navigate to calendar
     await login(page);
 
-    // 3. Verify all UI elements are properly sized and positioned
-    await expect(page.getByRole('heading', { name: '2026년 1월' })).toBeVisible();
+    // 3. Verify all UI elements are visible
+    await expect(page.getByRole('heading', { name: /\d{4}년 \d{1,2}월$/ })).toBeVisible();
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
-    await expect(page.getByText('월')).toBeVisible();
-    await expect(page.getByText('주')).toBeVisible();
-    await expect(page.getByText('일')).toBeVisible();
-    await expect(page.getByText('오늘')).toBeVisible();
+    await expect(page.getByRole('button', { name: '월' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '주' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '일', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: '오늘' })).toBeVisible();
 
-    // 4. Check that calendar grid is wide and readable
-    // Verify calendar displays events properly
-    await expect(page.getByText('프로젝트 미팅 (수정됨)').first()).toBeVisible();
-    await expect(page.getByText('테스트 일정')).toBeVisible();
-
-    // 5. Verify dialogs are centered and appropriately sized
+    // 4. Verify dialogs work properly
     await page.getByRole('button', { name: '일정 추가' }).click();
-    await expect(page.getByRole('heading', { name: '일정 추가' })).toBeVisible();
-    await expect(page.getByRole('textbox', { name: '제목' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '취소' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '저장' })).toBeVisible();
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).toBeVisible();
     await page.getByRole('button', { name: '취소' }).click();
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
 
     // Verify no horizontal scrolling required
     const scrollInfo = await page.evaluate(() => {

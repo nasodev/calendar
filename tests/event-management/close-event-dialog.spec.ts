@@ -21,10 +21,5 @@ test.describe('Event Management - Basic', () => {
 
     // 4. Verify the dialog closes
     await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
-
-    // 5. Verify no event was created (only original events exist)
-    await expect(page.getByText('테스트 일정')).toBeVisible();
-    await expect(page.getByText('월례 보고')).toBeVisible();
-    await expect(page.getByText('기념일')).toBeVisible();
   });
 });

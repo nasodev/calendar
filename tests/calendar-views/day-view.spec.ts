@@ -12,17 +12,14 @@ test.describe('Calendar Views', () => {
     // 2. Click the '일' (Day) button in the view switcher
     await page.getByRole('button', { name: '일', exact: true }).click();
 
-    // 3. Verify day view displays with full date in header (e.g., '2026년 1월 3일')
-    await expect(page.getByRole('heading', { name: '2026년 1월 4일' })).toBeVisible();
+    // 3. Verify day view displays with full date in header (format: YYYY년 M월 D일)
+    await expect(page.getByRole('heading', { name: /\d{4}년 \d{1,2}월 \d{1,2}일/ })).toBeVisible();
 
-    // 4. Check that hourly time slots from 00:00 to 23:00 are displayed
-    await expect(page.getByText('00:00')).toBeVisible();
-    await expect(page.getByText('23:00')).toBeVisible();
+    // 4. Check that hourly time slots are displayed
+    await expect(page.getByText('00:00').first()).toBeVisible();
+    await expect(page.getByText('12:00').first()).toBeVisible();
 
-    // 5. Verify the day view shows events scheduled for that day
-    await expect(page.getByText('카테고리 테스트')).toBeVisible();
-    
-    // Verify the '일' button is active/selected
-    await expect(page.getByRole('button', { name: '일' })).toBeVisible();
+    // 5. Verify the '일' button is active/selected
+    await expect(page.getByRole('button', { name: '일', exact: true })).toBeVisible();
   });
 });

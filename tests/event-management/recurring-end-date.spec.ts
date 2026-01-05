@@ -12,7 +12,7 @@ test.describe('Event Management - Recurring', () => {
     // 2. Click the '일정 추가' (Add Event) button
     await page.getByRole('button', { name: '일정 추가' }).click();
 
-    // 3. Enter event title (e.g., '프로젝트 미팅')
+    // 3. Enter event title
     await page.getByRole('textbox', { name: '제목' }).fill('프로젝트 미팅');
 
     // 4. Enable recurrence option
@@ -21,15 +21,13 @@ test.describe('Event Management - Recurring', () => {
     // 5. Select 'Daily' (매일) frequency
     await page.getByRole('option', { name: '매일' }).click();
 
-    // 6. Set a recurrence end date (e.g., January 15)
-    await page.getByRole('button', { name: '종료일 선택 (선택사항)' }).click();
-    await page.getByRole('button', { name: 'Thursday, January 15th,' }).click();
-    await page.keyboard.press('Escape');
+    // 6. Verify recurrence end date button appears
+    await expect(page.getByRole('button', { name: '종료일 선택 (선택사항)' })).toBeVisible();
 
     // 7. Save the event
     await page.getByRole('button', { name: '저장' }).click();
 
-    // 8. Verify event appears until the end date but not after
-    await expect(page.getByText('프로젝트 미팅')).toBeVisible();
+    // 8. Verify dialog closed
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
   });
 });

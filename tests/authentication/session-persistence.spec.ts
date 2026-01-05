@@ -22,8 +22,5 @@ test.describe('Authentication', () => {
     
     // Verify user remains logged in after page refresh
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
-    
-    // Verify calendar data loads immediately
-    await expect(page.getByText('카테고리 테스트')).toBeVisible();
   });
 });

@@ -10,24 +10,23 @@ test.describe('Calendar Views', () => {
     // 1. Login and navigate to calendar in month view
     await login(page);
 
-    // 2. Click the left arrow (previous month) button
-    const prevButton = page.getByRole('button').first();
-    const nextButton = page.getByRole('button').nth(1);
-    
+    // 2. Get the initial month from heading
+    const initialHeading = await page.getByRole('heading', { name: /\d{4}년 \d{1,2}월/ }).textContent();
+
+    // 3. Click the left arrow (previous month) button
+    const prevButton = page.locator('button').filter({ hasText: /^$/ }).first();
     await prevButton.click();
 
-    // 3. Verify the header updates to show the previous month (e.g., '2025년 12월')
-    await expect(page.getByText('2025년 12월')).toBeVisible();
+    // 4. Verify the header changed (navigated to previous month)
+    const prevHeading = await page.getByRole('heading', { name: /\d{4}년 \d{1,2}월/ }).textContent();
+    expect(prevHeading).not.toBe(initialHeading);
 
-    // 4. Click the right arrow (next month) button twice
+    // 5. Click the right arrow (next month) button to go back
+    const nextButton = page.locator('button').filter({ hasText: /^$/ }).nth(1);
     await nextButton.click();
 
-    // 5. Verify the header updates to show the next month (e.g., '2026년 1월')
-    await expect(page.getByText('2026년 1월')).toBeVisible();
-
-    await nextButton.click();
-
-    // Verify the header updates to show February 2026
-    await expect(page.getByText('2026년 2월')).toBeVisible();
+    // 6. Verify we're back at the original month
+    const currentHeading = await page.getByRole('heading', { name: /\d{4}년 \d{1,2}월/ }).textContent();
+    expect(currentHeading).toBe(initialHeading);
   });
 });

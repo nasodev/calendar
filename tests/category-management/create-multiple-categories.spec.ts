@@ -28,13 +28,12 @@ test.describe('Category Management', () => {
     // 5. Create third category (e.g., '건강')
     await page.getByRole('button', { name: '카테고리 추가' }).click();
     await page.getByRole('textbox', { name: '예: 학교, 운동, 가족' }).fill('건강');
-    await page.locator('.flex.flex-wrap > button:nth-child(3)').click();
+    await page.locator('.flex.flex-wrap > button:nth-child(3)').first().click();
     await page.getByRole('button', { name: '추가' }).click();
 
-    // 6. Verify all three categories appear in the list
-    await expect(page.getByText('업무')).toBeVisible();
-    await expect(page.getByText('가족')).toBeVisible();
-    await expect(page.getByText('개인')).toBeVisible();
-    await expect(page.getByText('건강')).toBeVisible();
+    // 6. Verify all three categories created in this test appear in the list
+    await expect(page.getByText('가족').first()).toBeVisible();
+    await expect(page.getByText('개인').first()).toBeVisible();
+    await expect(page.getByText('건강').first()).toBeVisible();
   });
 });

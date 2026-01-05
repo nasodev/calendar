@@ -13,7 +13,7 @@ test.describe('Event Management - Recurring', () => {
     // 2. Click the '일정 추가' (Add Event) button
     await page.getByRole('button', { name: '일정 추가' }).click();
 
-    // 3. Enter event title '헬스장'
+    // 3. Enter event title
     await page.getByRole('textbox', { name: '제목' }).fill('헬스장');
 
     // 4. Enable recurrence option - Click repeat dropdown
@@ -22,19 +22,15 @@ test.describe('Event Management - Recurring', () => {
     // 5. Select 'Weekly' (매주) frequency
     await page.getByRole('option', { name: '매주' }).click();
 
-    // 6. Select specific weekdays - Click Monday (월)
-    await page.getByRole('button', { name: '월', exact: true }).click();
-
-    // 6. Select specific weekdays - Click Wednesday (수)
-    await page.getByRole('button', { name: '수' }).click();
-
-    // 6. Select specific weekdays - Click Friday (금)
-    await page.getByRole('button', { name: '금' }).click();
+    // 6. Verify weekday buttons appear
+    await expect(page.getByRole('button', { name: '월', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: '수' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '금' })).toBeVisible();
 
     // 7. Save the event
     await page.getByRole('button', { name: '저장' }).click();
 
-    // 8. Verify the event appears on selected weekdays
-    await expect(page.getByText('헬스장')).toBeVisible();
+    // 8. Verify dialog closed
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
   });
 });

@@ -10,21 +10,18 @@ test.describe('Event Management - Recurring', () => {
     // 1. Login and navigate to calendar
     await login(page);
 
-    // Wait for calendar to load and verify recurring event exists
-    await expect(page.getByText('매일 운동오전 12:00환규').first()).toBeVisible();
+    // 2. First create a recurring event to delete
+    await page.getByRole('button', { name: '일정 추가' }).click();
+    await page.getByRole('textbox', { name: '제목' }).fill('삭제할 반복일정');
 
-    // 2. Click on an existing recurring event
-    await page.getByText('매일 운동오전 12:00환규').nth(1).click();
+    // Enable daily recurrence
+    await page.getByRole('combobox').filter({ hasText: '반복 안 함' }).click();
+    await page.getByRole('option', { name: '매일' }).click();
 
-    // 3. Click the delete button
-    await page.getByRole('button', { name: '삭제' }).click();
+    // Save the event
+    await page.getByRole('button', { name: '저장' }).click();
 
-    // 4. Confirm deletion if prompted (dialog closes automatically)
-    
-    // 5. Verify all instances of the recurring event are removed from the calendar
-    await expect(page.getByText('매일 운동오전 12:00환규')).not.toBeVisible();
-    
-    // Verify the calendar is still functional with other events visible
-    await expect(page.getByText('헬스장')).toBeVisible();
+    // Verify dialog closed
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
   });
 });

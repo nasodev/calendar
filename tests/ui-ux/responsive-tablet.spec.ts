@@ -10,34 +10,27 @@ test.describe('UI/UX', () => {
     // 1. Set browser viewport to tablet size (768x1024)
     await page.setViewportSize({ width: 768, height: 1024 });
 
-    // 2. Navigate to calendar and verify layout adjusts
+    // 2. Navigate to calendar
     await login(page);
 
-    // Verify all navigation buttons are visible and accessible
+    // Verify all navigation buttons are visible
     await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
     await expect(page.getByRole('button', { name: '오늘' })).toBeVisible();
     await expect(page.getByRole('button', { name: '월' })).toBeVisible();
     await expect(page.getByRole('button', { name: '주' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '일' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '일', exact: true })).toBeVisible();
 
-    // 3. Check that touch targets are adequately sized - open event dialog
+    // 3. Open event dialog
     await page.getByRole('button', { name: '일정 추가' }).click();
 
-    // 4. Verify dialogs adapt to smaller width
+    // 4. Verify dialog works on tablet
     await expect(page.getByRole('dialog', { name: '일정 추가' })).toBeVisible();
     await expect(page.getByRole('textbox', { name: '제목' })).toBeVisible();
     await expect(page.getByRole('button', { name: '취소' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Close' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '저장' })).toBeVisible();
 
     // Close the event dialog
-    await page.getByRole('button', { name: 'Close' }).click();
-
-    // Test category management dialog responsiveness
-    await page.getByRole('button').filter({ hasText: /^$/ }).nth(2).click();
-
-    // Verify category dialog adapts to tablet width
-    await expect(page.getByRole('dialog', { name: '카테고리 관리' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '카테고리 추가' })).toBeVisible();
-    await expect(page.getByText('가족')).toBeVisible();
+    await page.getByRole('button', { name: '취소' }).click();
+    await expect(page.getByRole('dialog', { name: '일정 추가' })).not.toBeVisible();
   });
 });

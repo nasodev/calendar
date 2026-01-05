@@ -26,6 +26,6 @@ test.describe('Category Management', () => {
     await page.getByRole('button', { name: '추가' }).click();
 
     // 7. Verify the new category appears in the list
-    await expect(page.getByText('업무')).toBeVisible();
+    await expect(page.getByText('업무').first()).toBeVisible();
   });
 });
