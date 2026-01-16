@@ -26,21 +26,13 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    // Setup project - runs authentication once
-    {
-      name: 'setup',
-      testMatch: /auth\.setup\.ts/,
-    },
-
-    // Main test project with authentication
+    // Main test project - each test handles its own login via helpers/auth.ts
+    // (storageState doesn't work with Firebase which uses IndexedDB)
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        // Use saved authentication state
-        storageState: '.auth/user.json',
       },
-      dependencies: ['setup'],
       // Exclude auth setup from regular test runs
       testIgnore: /auth\.setup\.ts/,
     },
@@ -68,9 +60,12 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:23002',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: './run-local.sh',
+    url: 'http://localhost:23002',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000, // 2 minutes to start server
+    stdout: 'pipe',
+    stderr: 'pipe',
+  },
 });
