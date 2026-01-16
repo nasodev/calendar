@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { CalendarHeader } from '@/components/calendar/CalendarHeader';
 import { MonthView } from '@/components/calendar/MonthView';
@@ -22,6 +21,13 @@ import {
   registerSelfAsMember,
   type RecurrencePattern,
 } from '@/lib/api';
+import {
+  getDemoEvents,
+  saveDemoEvent,
+  updateDemoEvent,
+  deleteDemoEvent,
+  DEMO_CATEGORIES,
+} from '@/lib/storage';
 
 type ViewType = 'month' | 'week' | 'day';
 
@@ -49,7 +55,6 @@ interface Category {
 
 export default function Home() {
   const { user, loading } = useAuth();
-  const router = useRouter();
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<ViewType>('month');
@@ -68,20 +73,23 @@ export default function Home() {
     const startDate = new Date(year, month - 1, 1).toISOString().split('T')[0];
     const endDate = new Date(year, month + 2, 0).toISOString().split('T')[0];
 
+    if (!user) {
+      // 데모 모드: localStorage에서 로드
+      setEvents(getDemoEvents(startDate, endDate));
+      return;
+    }
+
     try {
       const data = await getEvents(startDate, endDate);
       setEvents(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch events:', error);
     }
-  }, [currentDate]);
+  }, [currentDate, user]);
 
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
+  // 데모 모드: 로그인하지 않은 사용자
+  const isDemo = !user && !loading;
 
   useEffect(() => {
     if (!user || isVerified) return;
@@ -110,7 +118,8 @@ export default function Home() {
   }, [user, isVerified]);
 
   useEffect(() => {
-    if (!isVerified) return;
+    // 데모 모드 또는 인증된 사용자만 데이터 로드
+    if (!isDemo && !isVerified) return;
 
     let cancelled = false;
 
@@ -119,6 +128,13 @@ export default function Home() {
       const month = currentDate.getMonth();
       const startDate = new Date(year, month - 1, 1).toISOString().split('T')[0];
       const endDate = new Date(year, month + 2, 0).toISOString().split('T')[0];
+
+      if (isDemo) {
+        // 데모 모드: localStorage에서 로드
+        setEvents(getDemoEvents(startDate, endDate));
+        setCategories([...DEMO_CATEGORIES]);
+        return;
+      }
 
       try {
         const [eventsData, categoriesData] = await Promise.all([
@@ -139,7 +155,7 @@ export default function Home() {
     return () => {
       cancelled = true;
     };
-  }, [isVerified, currentDate]);
+  }, [isDemo, isVerified, currentDate]);
 
   const handleNavigate = (direction: 'prev' | 'next' | 'today') => {
     const newDate = new Date(currentDate);
@@ -205,6 +221,17 @@ export default function Home() {
     recurrence_pattern?: RecurrencePattern;
     recurrence_end?: string;
   }) => {
+    if (isDemo) {
+      // 데모 모드: localStorage에 저장
+      if (eventData.id) {
+        updateDemoEvent(eventData.id, eventData);
+      } else {
+        saveDemoEvent(eventData);
+      }
+      await fetchEvents();
+      return;
+    }
+
     try {
       if (eventData.id) {
         await updateEvent(eventData.id, eventData);
@@ -218,6 +245,13 @@ export default function Home() {
   };
 
   const handleDeleteEvent = async (id: string) => {
+    if (isDemo) {
+      // 데모 모드: localStorage에서 삭제
+      deleteDemoEvent(id);
+      await fetchEvents();
+      return;
+    }
+
     try {
       await deleteEvent(id);
       await fetchEvents();
@@ -270,10 +304,6 @@ export default function Home() {
     );
   }
 
-  if (!user) {
-    return null;
-  }
-
   return (
     <div className="min-h-screen flex flex-col">
       <CalendarHeader
@@ -283,6 +313,7 @@ export default function Home() {
         onNavigate={handleNavigate}
         onAddEvent={handleAddEvent}
         onOpenSettings={() => setCategoryDialogOpen(true)}
+        isDemo={isDemo}
       />
 
       {view === 'month' && (

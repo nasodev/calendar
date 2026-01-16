@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Plus, Calendar, Settings } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Calendar, Settings, LogIn } from 'lucide-react';
 
 type ViewType = 'month' | 'week' | 'day';
 
@@ -12,6 +13,7 @@ interface CalendarHeaderProps {
   onNavigate: (direction: 'prev' | 'next' | 'today') => void;
   onAddEvent: () => void;
   onOpenSettings: () => void;
+  isDemo?: boolean;
 }
 
 export function CalendarHeader({
@@ -21,6 +23,7 @@ export function CalendarHeader({
   onNavigate,
   onAddEvent,
   onOpenSettings,
+  isDemo = false,
 }: CalendarHeaderProps) {
   const formatTitle = () => {
     const year = currentDate.getFullYear();
@@ -63,7 +66,21 @@ export function CalendarHeader({
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between p-2 md:p-4 border-b gap-2 md:gap-4">
+    <div className="flex flex-col border-b">
+      {/* Demo mode banner */}
+      {isDemo && (
+        <div className="flex items-center justify-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-800 text-sm border-b">
+          <span>데모 모드</span>
+          <Link href="/login">
+            <Button variant="outline" size="sm" className="h-6 text-xs gap-1">
+              <LogIn className="h-3 w-3" />
+              로그인
+            </Button>
+          </Link>
+        </div>
+      )}
+
+      <div className="flex flex-col md:flex-row md:items-center justify-between p-2 md:p-4 gap-2 md:gap-4">
       {/* Top row on mobile: Navigation + Title */}
       <div className="flex items-center justify-between md:justify-start gap-2 md:gap-4">
         <div className="flex items-center gap-1">
@@ -129,6 +146,7 @@ export function CalendarHeader({
           <Plus className="h-4 w-4 mr-1" />
           일정 추가
         </Button>
+      </div>
       </div>
     </div>
   );
