@@ -9,8 +9,8 @@ test.describe('API Integration', () => {
   test.fixme('PATCH /calendar/events/{id} endpoint', async ({ page }) => {
     // FIXME: Test needs refactoring - created events may not be visible on calendar
     // depending on date range. Should use direct API call or ensure event is in visible range.
-    let patchRequest: any = null;
-    let patchResponse: any = null;
+    let patchRequest: { url: string; method: string; headers: Record<string, string>; body: Record<string, unknown> } | null = null;
+    let patchResponse: { status: number; body: Record<string, unknown> } | null = null;
 
     // Set up request/response listeners before navigating
     page.on('request', request => {
@@ -76,21 +76,21 @@ test.describe('API Integration', () => {
 
     // 6. Verify PATCH request was made
     expect(patchRequest).not.toBeNull();
-    expect(patchRequest.method).toBe('PATCH');
-    
+    expect(patchRequest!.method).toBe('PATCH');
+
     // 7. Verify request URL contains event ID
-    expect(patchRequest.url).toMatch(/\/calendar\/events\/\d+$/);
-    
+    expect(patchRequest!.url).toMatch(/\/calendar\/events\/\d+$/);
+
     // 8. Verify request body contains updated fields
-    expect(patchRequest.body).toBeTruthy();
-    expect(patchRequest.body.title).toBe('테스트 일정 (PATCH 수정됨)');
-    
+    expect(patchRequest!.body).toBeTruthy();
+    expect(patchRequest!.body.title).toBe('테스트 일정 (PATCH 수정됨)');
+
     // 9. Verify response returns updated event
     expect(patchResponse).not.toBeNull();
-    expect(patchResponse.status).toBe(200);
-    expect(patchResponse.body).toBeTruthy();
-    expect(patchResponse.body.title).toBe('테스트 일정 (PATCH 수정됨)');
-    expect(patchResponse.body.id).toBeTruthy();
+    expect(patchResponse!.status).toBe(200);
+    expect(patchResponse!.body).toBeTruthy();
+    expect(patchResponse!.body.title).toBe('테스트 일정 (PATCH 수정됨)');
+    expect(patchResponse!.body.id).toBeTruthy();
 
     // 10. Verify calendar reflects changes immediately
     await expect(page.getByText('테스트 일정 (PATCH 수정됨)').first()).toBeVisible();

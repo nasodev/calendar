@@ -8,8 +8,8 @@ import { login } from '../helpers/auth';
 test.describe('API Integration', () => {
   test('POST /calendar/events endpoint', async ({ page }) => {
     // Set up request and response capture
-    let postRequest: any = null;
-    let postResponse: any = null;
+    let postRequest: { url: string; method: string; body: Record<string, unknown>; headers: Record<string, string> } | null = null;
+    let postResponse: { status: number; body: Record<string, unknown> } | null = null;
 
     // 1. Navigate to calendar page (already authenticated)
     await login(page);
@@ -53,32 +53,32 @@ test.describe('API Integration', () => {
 
     // 3. Verify POST request was made
     expect(postRequest).not.toBeNull();
-    expect(postRequest.method).toBe('POST');
-    expect(postRequest.url).toContain('/calendar/events');
+    expect(postRequest!.method).toBe('POST');
+    expect(postRequest!.url).toContain('/calendar/events');
 
     // 4. Verify request body includes required fields
-    expect(postRequest.body).toHaveProperty('title', 'API 테스트 이벤트');
-    expect(postRequest.body).toHaveProperty('description', 'POST 요청 테스트를 위한 이벤트');
+    expect(postRequest!.body).toHaveProperty('title', 'API 테스트 이벤트');
+    expect(postRequest!.body).toHaveProperty('description', 'POST 요청 테스트를 위한 이벤트');
     // Backend uses start_time/end_time, not start/end
-    expect(postRequest.body).toHaveProperty('start_time');
-    expect(postRequest.body).toHaveProperty('end_time');
-    
+    expect(postRequest!.body).toHaveProperty('start_time');
+    expect(postRequest!.body).toHaveProperty('end_time');
+
     // Note: category_id and recurrence_pattern are optional and may not be present in the request body
 
     // Verify authorization header is present
-    expect(postRequest.headers).toHaveProperty('authorization');
-    expect(postRequest.headers.authorization).toContain('Bearer');
+    expect(postRequest!.headers).toHaveProperty('authorization');
+    expect(postRequest!.headers.authorization).toContain('Bearer');
 
     // 5. Verify response returns created event with id
     expect(postResponse).not.toBeNull();
-    expect(postResponse.status).toBe(201); // 201 Created for POST
-    expect(postResponse.body).toHaveProperty('id');
-    expect(postResponse.body).toHaveProperty('title', 'API 테스트 이벤트');
-    expect(postResponse.body).toHaveProperty('description', 'POST 요청 테스트를 위한 이벤트');
+    expect(postResponse!.status).toBe(201); // 201 Created for POST
+    expect(postResponse!.body).toHaveProperty('id');
+    expect(postResponse!.body).toHaveProperty('title', 'API 테스트 이벤트');
+    expect(postResponse!.body).toHaveProperty('description', 'POST 요청 테스트를 위한 이벤트');
 
     // 6. Verify event ID exists (can be number or string)
-    expect(postResponse.body.id).toBeDefined();
-    expect(postResponse.body.id).toBeTruthy();
+    expect(postResponse!.body.id).toBeDefined();
+    expect(postResponse!.body.id).toBeTruthy();
 
     // Note: Event may not be visible on calendar if created date is outside current view
     // The API response verification above confirms the event was created successfully

@@ -9,8 +9,8 @@ test.describe('API Integration', () => {
   test.fixme('DELETE /calendar/events/{id} endpoint', async ({ page }) => {
     // FIXME: Test needs refactoring - created events may not be visible on calendar
     // depending on date range. Should use direct API call or ensure event is in visible range.
-    let deleteRequest: any = null;
-    let deleteResponse: any = null;
+    let deleteRequest: { url: string; method: string; headers: Record<string, string> } | null = null;
+    let deleteResponse: { status: number } | null = null;
     let eventId: string | null = null;
 
     // Set up request/response listeners before navigating
@@ -67,13 +67,13 @@ test.describe('API Integration', () => {
 
     // 3. Use API to delete the event (navigate to the event by ID using browser evaluate)
     // Since the UI might not show the event depending on the date, we'll trigger the dialog directly
-    await page.evaluate((id) => {
+    await page.evaluate(() => {
       // Click on any visible event to open the edit dialog
       const eventCards = document.querySelectorAll('[role="button"]');
       if (eventCards.length > 0) {
         (eventCards[0] as HTMLElement).click();
       }
-    }, eventId);
+    });
 
     // If no event is visible, create a workaround by opening the "Add Event" dialog and manually navigating
     // For now, let's simplify and just verify the DELETE API call works by calling it directly
@@ -110,15 +110,15 @@ test.describe('API Integration', () => {
 
     // 6. Verify DELETE request was made
     expect(deleteRequest).not.toBeNull();
-    expect(deleteRequest.method).toBe('DELETE');
-    
+    expect(deleteRequest!.method).toBe('DELETE');
+
     // 7. Verify request URL contains event ID
-    expect(deleteRequest.url).toMatch(/\/calendar\/events\/\d+$/);
+    expect(deleteRequest!.url).toMatch(/\/calendar\/events\/\d+$/);
     expect(eventId).toBeTruthy();
-    
+
     // 8. Verify response returns success status (200 or 204)
     expect(deleteResponse).not.toBeNull();
-    expect([200, 204]).toContain(deleteResponse.status);
+    expect([200, 204]).toContain(deleteResponse!.status);
 
     // 9. Verify event is removed from calendar display
     await expect(page.getByText('테스트 일정').first()).not.toBeVisible({ timeout: 3000 });

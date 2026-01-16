@@ -42,7 +42,7 @@ test.describe('API Integration', () => {
       expect(event.end || event.end_time).toBeDefined();
 
       // 5. Verify recurring events include occurrence_date (if any exist)
-      const recurringEvents = responseData.events.filter((e: any) => e.recurrence_pattern);
+      const recurringEvents = responseData.events.filter((e: { recurrence_pattern?: unknown }) => e.recurrence_pattern);
 
       if (recurringEvents.length > 0) {
         for (const recurringEvent of recurringEvents) {

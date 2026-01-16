@@ -8,7 +8,7 @@ import { login } from '../helpers/auth';
 test.describe('API Integration', () => {
   test('GET /calendar/categories endpoint', async ({ page }) => {
     // Set up response listener for /calendar/categories endpoint
-    const apiResponses: any[] = [];
+    const apiResponses: { url: string; status: number; data: { id: number | string; name: string; color: string }[] }[] = [];
     
     page.on('response', async (response) => {
       const url = response.url();
