@@ -68,7 +68,7 @@ export function CalendarHeader({
   };
 
   return (
-    <div className="flex flex-col border-b">
+    <div className="flex flex-col border-b" data-testid="calendar-header">
       {/* Demo mode banner */}
       {isDemo && (
         <div className="flex items-center justify-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-800 text-sm border-b">
