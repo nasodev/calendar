@@ -8,6 +8,7 @@ import { WeekView } from '@/components/calendar/WeekView';
 import { DayView } from '@/components/calendar/DayView';
 import { EventDialog } from '@/components/calendar/EventDialog';
 import { CategoryDialog } from '@/components/calendar/CategoryDialog';
+import { AIScheduleDialog } from '@/components/calendar/AIScheduleDialog';
 import {
   getEvents,
   getCategories,
@@ -62,6 +63,7 @@ export default function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
+  const [aiDialogOpen, setAiDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [initialDate, setInitialDate] = useState<Date | undefined>(undefined);
   const [initialHour, setInitialHour] = useState<number | undefined>(undefined);
@@ -189,6 +191,14 @@ export default function Home() {
     setDialogOpen(true);
   };
 
+  const handleAISchedule = () => {
+    setAiDialogOpen(true);
+  };
+
+  const handleAISuccess = () => {
+    fetchEvents();
+  };
+
   const handleEventClick = (event: CalendarEvent) => {
     setSelectedEvent(event);
     setInitialDate(undefined);
@@ -312,6 +322,7 @@ export default function Home() {
         onViewChange={handleViewChange}
         onNavigate={handleNavigate}
         onAddEvent={handleAddEvent}
+        onAISchedule={handleAISchedule}
         onOpenSettings={() => setCategoryDialogOpen(true)}
         isDemo={isDemo}
       />
@@ -361,6 +372,12 @@ export default function Home() {
         onCreateCategory={handleCreateCategory}
         onUpdateCategory={handleUpdateCategory}
         onDeleteCategory={handleDeleteCategory}
+      />
+
+      <AIScheduleDialog
+        open={aiDialogOpen}
+        onOpenChange={setAiDialogOpen}
+        onSuccess={handleAISuccess}
       />
     </div>
   );
