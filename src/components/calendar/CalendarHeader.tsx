@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Plus, Calendar, Settings, LogIn } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Calendar, Settings, LogIn, Wand2 } from 'lucide-react';
 
 type ViewType = 'month' | 'week' | 'day';
 
@@ -12,6 +12,7 @@ interface CalendarHeaderProps {
   onViewChange: (view: ViewType) => void;
   onNavigate: (direction: 'prev' | 'next' | 'today') => void;
   onAddEvent: () => void;
+  onAISchedule: () => void;
   onOpenSettings: () => void;
   isDemo?: boolean;
 }
@@ -22,6 +23,7 @@ export function CalendarHeader({
   onViewChange,
   onNavigate,
   onAddEvent,
+  onAISchedule,
   onOpenSettings,
   isDemo = false,
 }: CalendarHeaderProps) {
@@ -137,6 +139,29 @@ export function CalendarHeader({
         >
           <Settings className="h-4 w-4" />
         </Button>
+        {/* AI Schedule button - only for logged-in users */}
+        {!isDemo && (
+          <>
+            {/* Mobile: icon only */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="md:hidden h-8 w-8"
+              onClick={onAISchedule}
+            >
+              <Wand2 className="h-4 w-4" />
+            </Button>
+            {/* Desktop: with text */}
+            <Button
+              variant="outline"
+              className="hidden md:flex"
+              onClick={onAISchedule}
+            >
+              <Wand2 className="h-4 w-4 mr-1" />
+              AI 등록
+            </Button>
+          </>
+        )}
         {/* Mobile: icon only */}
         <Button size="icon" className="md:hidden h-8 w-8" onClick={onAddEvent}>
           <Plus className="h-4 w-4" />
