@@ -62,12 +62,12 @@ test.describe('AI Schedule - Basic Dialog', () => {
     await expect(page.getByRole('dialog')).not.toBeVisible();
   });
 
-  test('should close dialog on overlay click', async ({ page }) => {
+  test('should close dialog on Escape key', async ({ page }) => {
     await page.getByRole('button', { name: /AI 등록/ }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
 
-    // Click outside the dialog (on the overlay)
-    await page.locator('[data-radix-dialog-overlay]').click({ position: { x: 10, y: 10 } });
+    // Press Escape to close the dialog
+    await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog')).not.toBeVisible();
   });
 });

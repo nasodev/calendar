@@ -13,11 +13,12 @@ test.describe('AI Schedule - Demo Mode', () => {
 
     // AI button should NOT be visible in demo mode
     const aiButton = page.getByRole('button', { name: /AI 등록/ });
-    await expect(aiButton).not.toBeVisible();
+    await expect(aiButton).toHaveCount(0);
 
-    // But regular add event button should be visible
-    const addButton = page.locator('button:has(svg.lucide-plus)');
-    await expect(addButton.first()).toBeVisible();
+    // But regular add event button should be visible (icon-only on mobile, text on desktop)
+    // Check that the "일정 추가" button exists on desktop view
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await expect(page.getByRole('button', { name: '일정 추가' })).toBeVisible();
   });
 
   test('should show demo mode banner', async ({ page }) => {
