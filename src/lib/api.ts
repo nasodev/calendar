@@ -155,3 +155,99 @@ export async function updateEvent(id: string, data: Partial<{
 export async function deleteEvent(id: string) {
   return fetchWithAuth(`/calendar/events/${id}`, { method: 'DELETE' });
 }
+
+// Calendar AI Types
+export interface ParsedEvent {
+  title: string;
+  start_time: string;
+  end_time: string;
+  all_day: boolean;
+  description?: string;
+  recurrence?: string;
+}
+
+export interface AIParseResponse {
+  success: boolean;
+  pending_id?: string;
+  events?: ParsedEvent[];
+  message?: string;
+  expires_at?: string;
+  error?: string;
+}
+
+export interface AIConfirmResponse {
+  success: boolean;
+  created_count?: number;
+  event_ids?: string[];
+  error?: string;
+}
+
+export interface PendingEventItem {
+  id: string;
+  events: ParsedEvent[];
+  message: string;
+  created_at: string;
+  expires_at: string;
+}
+
+export interface PendingListResponse {
+  count: number;
+  pending_events: PendingEventItem[];
+}
+
+// Calendar AI Functions
+export async function aiParse(text?: string, imageBase64?: string): Promise<AIParseResponse> {
+  try {
+    return await fetchWithAuth('/calendar/ai/parse', {
+      method: 'POST',
+      body: JSON.stringify({
+        text,
+        image_base64: imageBase64,
+      }),
+    });
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+export async function aiConfirm(
+  pendingId: string,
+  modifications?: ParsedEvent[]
+): Promise<AIConfirmResponse> {
+  try {
+    return await fetchWithAuth(`/calendar/ai/confirm/${pendingId}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        modifications,
+      }),
+    });
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+export async function aiCancel(pendingId: string): Promise<{ success: boolean; message?: string }> {
+  try {
+    return await fetchWithAuth(`/calendar/ai/cancel/${pendingId}`, {
+      method: 'POST',
+    });
+  } catch {
+    return {
+      success: false,
+    };
+  }
+}
+
+export async function aiGetPending(): Promise<PendingListResponse> {
+  try {
+    return await fetchWithAuth('/calendar/ai/pending');
+  } catch {
+    return { count: 0, pending_events: [] };
+  }
+}
