@@ -48,3 +48,9 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 /.auth/
+
+# IDE and editor settings
+.cursor/
+.agent/
+.agents/
+.claude/skills/
