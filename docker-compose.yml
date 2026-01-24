@@ -1,0 +1,15 @@
+services:
+  calendar:
+    build:
+      context: .
+      target: development
+    container_name: calendar-dev
+    ports:
+      - "23004:3002"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:28000
+    restart: unless-stopped

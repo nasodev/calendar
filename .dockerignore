@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+.env*
+docker-compose*.yml
+Dockerfile
+.dockerignore
+tests
+specs
+docs
+playwright.config.ts
+playwright-report
+test-results

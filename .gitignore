@@ -54,3 +54,6 @@ node_modules/
 .agent/
 .agents/
 .claude/skills/
+
+# Docker
+docker-compose.override.yml

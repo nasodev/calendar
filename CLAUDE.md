@@ -4,6 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+### Docker (로컬 개발)
+
+```bash
+./run-local.sh              # Docker로 실행 (기본)
+./run-local.sh npm          # npm으로 실행 (기존 방식)
+./run-local.sh restart      # Docker 재시작
+
+# 또는 직접
+docker compose up --build
+```
+
+### npm (기존 방식)
+
 ```bash
 npm run dev          # Start dev server on port 3002
 npm run build        # Production build
@@ -11,10 +24,12 @@ npm run lint         # Run ESLint
 npx tsc --noEmit     # Type check without emitting
 ```
 
-For local development on alternate port:
-```bash
-./run-local.sh       # Runs on port 23002
-```
+### 포트 구성
+
+| 환경 | 포트 | URL |
+|------|------|-----|
+| 로컬 개발 | 23004 | http://localhost:23004 |
+| 프로덕션 | 3002 | Nginx → localhost:3002 |
 
 ## Architecture
 
