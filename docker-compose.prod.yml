@@ -1,3 +1,5 @@
+name: calendar
+
 services:
   calendar:
     image: ghcr.io/nasodev/calendar:${IMAGE_TAG:-latest}
