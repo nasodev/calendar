@@ -1,9 +1,12 @@
+name: funq-calendar
+
 services:
   calendar:
     build:
       context: .
       target: development
-    container_name: calendar-dev
+
+    # ✅ container_name 제거: compose가 funq-calendar-... 형태로 자동 이름 생성
     ports:
       - "23004:3002"
     volumes:
@@ -12,4 +15,10 @@ services:
       - /app/.next
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:28000
+
+    # ✅ funq 태그(라벨) 추가: 나중에 필터링 가능
+    labels:
+      - "com.funq.project=true"
+      - "com.funq.name=calendar"
+
     restart: unless-stopped
